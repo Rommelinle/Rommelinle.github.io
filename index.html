@@ -15,9 +15,16 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
         }
         .controls {
             margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         select {
             padding: 8px 12px;
@@ -26,6 +33,24 @@
             background-color: #222;
             color: #fff;
             border: 1px solid #444;
+            cursor: pointer;
+        }
+        .btn-github {
+            padding: 8px 14px;
+            font-size: 15px;
+            border-radius: 6px;
+            background-color: #24292e;
+            color: #ffffff;
+            text-decoration: none;
+            border: 1px solid #444;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .btn-github:hover {
+            background-color: #333;
         }
         #game-container {
             width: 640px;
@@ -38,14 +63,19 @@
 
     <h2>Emulador N64 Multi-Juego</h2>
 
-    <!-- Menú desplegable para elegir la ROM -->
+    <!-- Controles y enlaces -->
     <div class="controls">
         <label for="rom-select">Selecciona un juego: </label>
         <select id="rom-select" onchange="cargarJuego(this.value)">
-            <option value="SSSmash_Remix_2.0.0.z64">smash remix</option>
+            <option value="SSSmash_Remix_2.0.0.z64">Smash Remix</option>
             <option value="Mario Kart 64 (USA).n64">Mario Kart 64</option>
-            <option value="Mortal Kombat Trilogy (USA) (Rev B).n64">Mortal kombat trilogí</option>
+            <option value="Mortal Kombat Trilogy (USA) (Rev B).n64">Mortal Kombat Trilogy</option>
         </select>
+
+        <!-- Botón a GitHub -->
+        <a href="https://github.com/Rommelinle" target="_blank" class="btn-github">
+            GitHub
+        </a>
     </div>
 
     <!-- Contenedor dinámico del emulador -->
@@ -61,7 +91,7 @@
             // 2. Definir las variables globales de EmulatorJS con la nueva ROM
             window.EJS_player = '#game-container';
             window.EJS_core = 'n64';
-            window.EJS_gameUrl = romPath;
+            window.EJS_gameUrl = encodeURI(romPath); // Codifica espacios en los nombres de los archivos
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
 
             // 3. Crear y recargar el script loader.js dinámicamente
