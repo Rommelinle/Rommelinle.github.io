@@ -78,11 +78,11 @@
             margin-bottom: 15px;
         }
 
-        /* --- VISTA DE MANDO XBOX / GENÉRICO --- */
+        /* --- VISTA DE MANDO XBOX --- */
         .controller-wrapper {
             position: relative;
-            width: 280px;
-            height: 200px;
+            width: 260px;
+            height: 180px;
             margin: 10px auto;
         }
 
@@ -108,12 +108,6 @@
             fill: var(--accent-green) !important;
             stroke: var(--accent-green) !important;
             filter: drop-shadow(0 0 8px var(--accent-green));
-        }
-
-        .gp-trigger.active {
-            fill: var(--accent-orange) !important;
-            stroke: var(--accent-orange) !important;
-            filter: drop-shadow(0 0 8px var(--accent-orange));
         }
 
         .stick-head {
@@ -234,50 +228,36 @@
             <div class="card-header">🎮 PRUEBA DE MANDO (GAMEPAD)</div>
             
             <div class="controller-wrapper">
-                <svg class="controller-svg" viewBox="0 0 300 220">
-                    <!-- Gatillos Traseros T2 / L2-R2 -->
-                    <rect id="gp-t2-l" class="gp-part gp-trigger" x="45" y="8" width="45" height="18" rx="4"/>
-                    <text x="67" y="21" font-size="9" fill="#aaa" text-anchor="middle">LT / T2</text>
-                    
-                    <rect id="gp-t2-r" class="gp-part gp-trigger" x="210" y="8" width="45" height="18" rx="4"/>
-                    <text x="232" y="21" font-size="9" fill="#aaa" text-anchor="middle">RT / T2</text>
-
-                    <!-- Gatillos Superiores T1 / L1-R1 -->
-                    <rect id="gp-t1-l" class="gp-part" x="45" y="30" width="55" height="14" rx="4"/>
-                    <text x="72" y="41" font-size="9" fill="#fff" text-anchor="middle">LB / T1</text>
-                    
-                    <rect id="gp-t1-r" class="gp-part" x="200" y="30" width="55" height="14" rx="4"/>
-                    <text x="227" y="41" font-size="9" fill="#fff" text-anchor="middle">RB / T1</text>
-
+                <svg class="controller-svg" viewBox="0 0 300 200">
                     <!-- Cuerpo del Mando -->
-                    <path class="gp-part" d="M 50,50 Q 150,30 250,50 Q 290,90 270,180 Q 230,200 200,150 Q 150,160 100,150 Q 70,200 30,180 Q 10,90 50,50 Z"/>
-
-                    <!-- Botones Centrales (Select / Start) -->
-                    <rect id="gp-btn-8" class="gp-part" x="120" y="90" width="14" height="8" rx="3"/> <!-- Select -->
-                    <rect id="gp-btn-9" class="gp-part" x="166" y="90" width="14" height="8" rx="3"/> <!-- Start -->
+                    <path class="gp-part" d="M 50,40 Q 150,20 250,40 Q 290,80 270,170 Q 230,190 200,140 Q 150,150 100,140 Q 70,190 30,170 Q 10,80 50,40 Z"/>
+                    
+                    <!-- Gatillos y Bumpers -->
+                    <rect id="gp-l1" class="gp-part" x="50" y="20" width="50" height="12" rx="4"/>
+                    <rect id="gp-r1" class="gp-part" x="200" y="20" width="50" height="12" rx="4"/>
 
                     <!-- D-Pad (Cruceta) -->
                     <g id="gp-dpad">
-                        <path id="gp-dup" class="gp-part" d="M 90,115 h 12 v 12 h -12 z"/>
-                        <path id="gp-ddown" class="gp-part" d="M 90,139 h 12 v 12 h -12 z"/>
-                        <path id="gp-dleft" class="gp-part" d="M 78,127 h 12 v 12 h -12 z"/>
-                        <path id="gp-dright" class="gp-part" d="M 102,127 h 12 v 12 h -12 z"/>
+                        <path id="gp-dup" class="gp-part" d="M 90,105 h 12 v 12 h -12 z"/>
+                        <path id="gp-ddown" class="gp-part" d="M 90,129 h 12 v 12 h -12 z"/>
+                        <path id="gp-dleft" class="gp-part" d="M 78,117 h 12 v 12 h -12 z"/>
+                        <path id="gp-dright" class="gp-part" d="M 102,117 h 12 v 12 h -12 z"/>
                     </g>
 
                     <!-- Botones ABXY -->
-                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="95" r="8"/> <!-- Y -->
-                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="127" r="8"/> <!-- A -->
-                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="111" r="8"/> <!-- X -->
-                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="111" r="8"/> <!-- B -->
+                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="85" r="8"/> <!-- Y -->
+                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="117" r="8"/> <!-- A -->
+                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="101" r="8"/> <!-- X -->
+                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="101" r="8"/> <!-- B -->
 
-                    <!-- Sticks Analógicos (con soporte de clic L3/R3) -->
+                    <!-- Sticks Analogicos -->
                     <g id="gp-stick-left-group">
-                        <circle class="gp-part" cx="96" cy="85" r="18"/>
-                        <circle id="gp-stick-left" class="gp-part stick-head" cx="96" cy="85" r="12" fill="#4a5568"/>
+                        <circle class="gp-part" cx="96" cy="75" r="18"/>
+                        <circle id="gp-stick-left" class="gp-part stick-head" cx="96" cy="75" r="12" fill="#4a5568"/>
                     </g>
                     <g id="gp-stick-right-group">
-                        <circle class="gp-part" cx="170" cy="127" r="18"/>
-                        <circle id="gp-stick-right" class="gp-part stick-head" cx="170" cy="127" r="12" fill="#4a5568"/>
+                        <circle class="gp-part" cx="170" cy="117" r="18"/>
+                        <circle id="gp-stick-right" class="gp-part stick-head" cx="170" cy="117" r="12" fill="#4a5568"/>
                     </g>
                 </svg>
             </div>
@@ -285,7 +265,6 @@
             <div class="info-list">
                 Estado: <span id="gp-status" style="color:#ef4444;">Desconectado (presiona un botón)</span><br>
                 Mando: <span id="gp-name">Ninguno</span><br>
-                Gatillos T2: <span id="gp-val-triggers">L2: 0.00 | R2: 0.00</span><br>
                 Stick Izquierdo: <span id="gp-val-l">X: 0.00, Y: 0.00</span><br>
                 Stick Derecho: <span id="gp-val-r">X: 0.00, Y: 0.00</span>
             </div>
@@ -381,7 +360,6 @@
         const gpName = document.getElementById('gp-name');
         const gpValL = document.getElementById('gp-val-l');
         const gpValR = document.getElementById('gp-val-r');
-        const gpValTriggers = document.getElementById('gp-val-triggers');
 
         const stickL = document.getElementById('gp-stick-left');
         const stickR = document.getElementById('gp-stick-right');
@@ -395,39 +373,23 @@
                 gpStatus.style.color = "var(--accent-green)";
                 gpName.textContent = gp.id.substring(0, 25) + "...";
 
-                // Botones principales ABXY
+                // Mapeo ABXY
                 [0, 1, 2, 3].forEach(i => {
                     const btn = document.getElementById(`gp-btn-${i}`);
                     if (btn) btn.classList.toggle('active', gp.buttons[i]?.pressed);
                 });
 
-                // Bumpers T1 (LB / RB) -> Botones 4 y 5
-                document.getElementById('gp-t1-l')?.classList.toggle('active', gp.buttons[4]?.pressed);
-                document.getElementById('gp-t1-r')?.classList.toggle('active', gp.buttons[5]?.pressed);
+                // Bumpers L1/R1
+                document.getElementById('gp-l1')?.classList.toggle('active', gp.buttons[4]?.pressed);
+                document.getElementById('gp-r1')?.classList.toggle('active', gp.buttons[5]?.pressed);
 
-                // Gatillos T2 (LT / RT) -> Botones 6 y 7
-                const valL2 = gp.buttons[6] ? gp.buttons[6].value.toFixed(2) : "0.00";
-                const valR2 = gp.buttons[7] ? gp.buttons[7].value.toFixed(2) : "0.00";
-                
-                document.getElementById('gp-t2-l')?.classList.toggle('active', gp.buttons[6]?.pressed);
-                document.getElementById('gp-t2-r')?.classList.toggle('active', gp.buttons[7]?.pressed);
-                gpValTriggers.textContent = `L2/T2: ${valL2} | R2/T2: ${valR2}`;
-
-                // Select / Start -> Botones 8 y 9
-                document.getElementById('gp-btn-8')?.classList.toggle('active', gp.buttons[8]?.pressed);
-                document.getElementById('gp-btn-9')?.classList.toggle('active', gp.buttons[9]?.pressed);
-
-                // Clics de Joystick L3 / R3 -> Botones 10 y 11
-                stickL.classList.toggle('active', gp.buttons[10]?.pressed);
-                stickR.classList.toggle('active', gp.buttons[11]?.pressed);
-
-                // D-Pad -> Botones 12, 13, 14, 15
+                // D-Pad
                 document.getElementById('gp-dup')?.classList.toggle('active', gp.buttons[12]?.pressed);
                 document.getElementById('gp-ddown')?.classList.toggle('active', gp.buttons[13]?.pressed);
                 document.getElementById('gp-dleft')?.classList.toggle('active', gp.buttons[14]?.pressed);
                 document.getElementById('gp-dright')?.classList.toggle('active', gp.buttons[15]?.pressed);
 
-                // Sticks Analógicos
+                // Sticks Analogicos
                 const lx = (gp.axes[0] || 0).toFixed(2);
                 const ly = (gp.axes[1] || 0).toFixed(2);
                 const rx = (gp.axes[2] || 0).toFixed(2);
@@ -495,4 +457,15 @@
                 marker.style.borderColor = color;
                 marker.style.color = color;
                 marker.textContent = i + 1;
-   
+                touchPad.appendChild(marker);
+
+                touchCoords.innerHTML += `Punto ${i + 1}: (${x}px, ${y}px)<br>`;
+            }
+        }
+
+        ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(evt => {
+            touchPad.addEventListener(evt, handleTouch);
+        });
+    </script>
+</body>
+</html>
