@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Tester Pro - Mando, Teclado & Táctil</title>
+    <title>Tester Pro Multi-Gamepad</title>
     <style>
         :root {
             --bg-dark: #12161f;
@@ -69,6 +69,7 @@
         .card-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
             font-size: 1.1rem;
             font-weight: 700;
@@ -78,11 +79,23 @@
             margin-bottom: 15px;
         }
 
-        /* --- VISTA DE MANDO XBOX --- */
+        /* --- SELECTOR DE MANDO --- */
+        select.gp-selector {
+            background: #2d3748;
+            color: #fff;
+            border: 1px solid #4a5568;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* --- VISTA DE MANDO --- */
         .controller-wrapper {
             position: relative;
-            width: 260px;
-            height: 180px;
+            width: 280px;
+            height: 200px;
             margin: 10px auto;
         }
 
@@ -108,6 +121,12 @@
             fill: var(--accent-green) !important;
             stroke: var(--accent-green) !important;
             filter: drop-shadow(0 0 8px var(--accent-green));
+        }
+
+        .gp-trigger.active {
+            fill: var(--accent-orange) !important;
+            stroke: var(--accent-orange) !important;
+            filter: drop-shadow(0 0 8px var(--accent-orange));
         }
 
         .stick-head {
@@ -225,46 +244,24 @@
 
         <!-- CARD 1: MANDO (GAMEPAD) -->
         <div class="card">
-            <div class="card-header">🎮 PRUEBA DE MANDO (GAMEPAD)</div>
+            <div class="card-header">
+                <span>🎮 MANDO (GAMEPAD)</span>
+                <!-- Selector de tipo de mando -->
+                <select id="gp-type-select" class="gp-selector" onchange="switchGamepadLayout(this.value)">
+                    <option value="xbox">Xbox / Genérico (X3)</option>
+                    <option value="ps">PlayStation (DualShock)</option>
+                    <option value="switch">Nintendo Switch / N64</option>
+                </select>
+            </div>
             
-            <div class="controller-wrapper">
-                <svg class="controller-svg" viewBox="0 0 300 200">
-                    <!-- Cuerpo del Mando -->
-                    <path class="gp-part" d="M 50,40 Q 150,20 250,40 Q 290,80 270,170 Q 230,190 200,140 Q 150,150 100,140 Q 70,190 30,170 Q 10,80 50,40 Z"/>
-                    
-                    <!-- Gatillos y Bumpers -->
-                    <rect id="gp-l1" class="gp-part" x="50" y="20" width="50" height="12" rx="4"/>
-                    <rect id="gp-r1" class="gp-part" x="200" y="20" width="50" height="12" rx="4"/>
-
-                    <!-- D-Pad (Cruceta) -->
-                    <g id="gp-dpad">
-                        <path id="gp-dup" class="gp-part" d="M 90,105 h 12 v 12 h -12 z"/>
-                        <path id="gp-ddown" class="gp-part" d="M 90,129 h 12 v 12 h -12 z"/>
-                        <path id="gp-dleft" class="gp-part" d="M 78,117 h 12 v 12 h -12 z"/>
-                        <path id="gp-dright" class="gp-part" d="M 102,117 h 12 v 12 h -12 z"/>
-                    </g>
-
-                    <!-- Botones ABXY -->
-                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="85" r="8"/> <!-- Y -->
-                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="117" r="8"/> <!-- A -->
-                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="101" r="8"/> <!-- X -->
-                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="101" r="8"/> <!-- B -->
-
-                    <!-- Sticks Analogicos -->
-                    <g id="gp-stick-left-group">
-                        <circle class="gp-part" cx="96" cy="75" r="18"/>
-                        <circle id="gp-stick-left" class="gp-part stick-head" cx="96" cy="75" r="12" fill="#4a5568"/>
-                    </g>
-                    <g id="gp-stick-right-group">
-                        <circle class="gp-part" cx="170" cy="117" r="18"/>
-                        <circle id="gp-stick-right" class="gp-part stick-head" cx="170" cy="117" r="12" fill="#4a5568"/>
-                    </g>
-                </svg>
+            <div class="controller-wrapper" id="svg-container">
+                <!-- El SVG se renderiza dinámicamente mediante JS según la opción elegida -->
             </div>
 
             <div class="info-list">
                 Estado: <span id="gp-status" style="color:#ef4444;">Desconectado (presiona un botón)</span><br>
                 Mando: <span id="gp-name">Ninguno</span><br>
+                Gatillos T2: <span id="gp-val-triggers">L2/T2: 0.00 | R2/T2: 0.00</span><br>
                 Stick Izquierdo: <span id="gp-val-l">X: 0.00, Y: 0.00</span><br>
                 Stick Derecho: <span id="gp-val-r">X: 0.00, Y: 0.00</span>
             </div>
@@ -355,117 +352,116 @@
     </div>
 
     <script>
-        /* --- LÓGICA MANDO --- */
-        const gpStatus = document.getElementById('gp-status');
-        const gpName = document.getElementById('gp-name');
-        const gpValL = document.getElementById('gp-val-l');
-        const gpValR = document.getElementById('gp-val-r');
+        /* --- SVGS DE LOS DISTINTOS MODELOS DE MANDO --- */
+        const svgTemplates = {
+            xbox: `
+                <svg class="controller-svg" viewBox="0 0 300 220">
+                    <rect id="gp-t2-l" class="gp-part gp-trigger" x="45" y="8" width="45" height="18" rx="4"/>
+                    <text x="67" y="21" font-size="9" fill="#aaa" text-anchor="middle">LT / T2</text>
+                    <rect id="gp-t2-r" class="gp-part gp-trigger" x="210" y="8" width="45" height="18" rx="4"/>
+                    <text x="232" y="21" font-size="9" fill="#aaa" text-anchor="middle">RT / T2</text>
 
-        const stickL = document.getElementById('gp-stick-left');
-        const stickR = document.getElementById('gp-stick-right');
+                    <rect id="gp-t1-l" class="gp-part" x="45" y="30" width="55" height="14" rx="4"/>
+                    <text x="72" y="41" font-size="9" fill="#fff" text-anchor="middle">LB / T1</text>
+                    <rect id="gp-t1-r" class="gp-part" x="200" y="30" width="55" height="14" rx="4"/>
+                    <text x="227" y="41" font-size="9" fill="#fff" text-anchor="middle">RB / T1</text>
 
-        function updateGamepad() {
-            const gamepads = navigator.getGamepads();
-            const gp = gamepads[0] || gamepads[1] || gamepads[2] || gamepads[3];
+                    <path class="gp-part" d="M 50,50 Q 150,30 250,50 Q 290,90 270,180 Q 230,200 200,150 Q 150,160 100,150 Q 70,200 30,180 Q 10,90 50,50 Z"/>
 
-            if (gp) {
-                gpStatus.textContent = "Conectado";
-                gpStatus.style.color = "var(--accent-green)";
-                gpName.textContent = gp.id.substring(0, 25) + "...";
+                    <rect id="gp-btn-8" class="gp-part" x="120" y="90" width="14" height="8" rx="3"/>
+                    <rect id="gp-btn-9" class="gp-part" x="166" y="90" width="14" height="8" rx="3"/>
 
-                // Mapeo ABXY
-                [0, 1, 2, 3].forEach(i => {
-                    const btn = document.getElementById(`gp-btn-${i}`);
-                    if (btn) btn.classList.toggle('active', gp.buttons[i]?.pressed);
-                });
+                    <g id="gp-dpad">
+                        <path id="gp-dup" class="gp-part" d="M 90,115 h 12 v 12 h -12 z"/>
+                        <path id="gp-ddown" class="gp-part" d="M 90,139 h 12 v 12 h -12 z"/>
+                        <path id="gp-dleft" class="gp-part" d="M 78,127 h 12 v 12 h -12 z"/>
+                        <path id="gp-dright" class="gp-part" d="M 102,127 h 12 v 12 h -12 z"/>
+                    </g>
 
-                // Bumpers L1/R1
-                document.getElementById('gp-l1')?.classList.toggle('active', gp.buttons[4]?.pressed);
-                document.getElementById('gp-r1')?.classList.toggle('active', gp.buttons[5]?.pressed);
+                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="95" r="8"/>
+                    <text x="215" y="98" font-size="8" fill="#fff" text-anchor="middle">Y</text>
+                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="127" r="8"/>
+                    <text x="215" y="130" font-size="8" fill="#fff" text-anchor="middle">A</text>
+                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="111" r="8"/>
+                    <text x="199" y="114" font-size="8" fill="#fff" text-anchor="middle">X</text>
+                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="111" r="8"/>
+                    <text x="231" y="114" font-size="8" fill="#fff" text-anchor="middle">B</text>
 
-                // D-Pad
-                document.getElementById('gp-dup')?.classList.toggle('active', gp.buttons[12]?.pressed);
-                document.getElementById('gp-ddown')?.classList.toggle('active', gp.buttons[13]?.pressed);
-                document.getElementById('gp-dleft')?.classList.toggle('active', gp.buttons[14]?.pressed);
-                document.getElementById('gp-dright')?.classList.toggle('active', gp.buttons[15]?.pressed);
+                    <g>
+                        <circle class="gp-part" cx="96" cy="85" r="18"/>
+                        <circle id="gp-stick-left" class="gp-part stick-head" cx="96" cy="85" r="12" fill="#4a5568"/>
+                    </g>
+                    <g>
+                        <circle class="gp-part" cx="170" cy="127" r="18"/>
+                        <circle id="gp-stick-right" class="gp-part stick-head" cx="170" cy="127" r="12" fill="#4a5568"/>
+                    </g>
+                </svg>`,
+            
+            ps: `
+                <svg class="controller-svg" viewBox="0 0 300 220">
+                    <rect id="gp-t2-l" class="gp-part gp-trigger" x="45" y="8" width="45" height="18" rx="4"/>
+                    <text x="67" y="21" font-size="9" fill="#aaa" text-anchor="middle">L2 / T2</text>
+                    <rect id="gp-t2-r" class="gp-part gp-trigger" x="210" y="8" width="45" height="18" rx="4"/>
+                    <text x="232" y="21" font-size="9" fill="#aaa" text-anchor="middle">R2 / T2</text>
 
-                // Sticks Analogicos
-                const lx = (gp.axes[0] || 0).toFixed(2);
-                const ly = (gp.axes[1] || 0).toFixed(2);
-                const rx = (gp.axes[2] || 0).toFixed(2);
-                const ry = (gp.axes[3] || 0).toFixed(2);
+                    <rect id="gp-t1-l" class="gp-part" x="45" y="30" width="55" height="14" rx="4"/>
+                    <text x="72" y="41" font-size="9" fill="#fff" text-anchor="middle">L1 / T1</text>
+                    <rect id="gp-t1-r" class="gp-part" x="200" y="30" width="55" height="14" rx="4"/>
+                    <text x="227" y="41" font-size="9" fill="#fff" text-anchor="middle">R1 / T1</text>
 
-                gpValL.textContent = `X: ${lx}, Y: ${ly}`;
-                gpValR.textContent = `X: ${rx}, Y: ${ry}`;
+                    <path class="gp-part" d="M 50,50 Q 150,40 250,50 Q 290,90 270,180 Q 220,200 190,150 Q 150,155 110,150 Q 80,200 30,180 Q 10,90 50,50 Z"/>
 
-                stickL.style.transform = `translate(${lx * 8}px, ${ly * 8}px)`;
-                stickR.style.transform = `translate(${rx * 8}px, ${ry * 8}px)`;
+                    <!-- Touchpad / Select-Start PS -->
+                    <rect id="gp-btn-17" class="gp-part" x="110" y="60" width="80" height="30" rx="4"/>
+                    <rect id="gp-btn-8" class="gp-part" x="90" y="65" width="10" height="12" rx="2"/>
+                    <rect id="gp-btn-9" class="gp-part" x="200" y="65" width="10" height="12" rx="2"/>
 
-            } else {
-                gpStatus.textContent = "Desconectado (presiona un botón)";
-                gpStatus.style.color = "#ef4444";
-                gpName.textContent = "Ninguno";
-            }
+                    <g id="gp-dpad">
+                        <path id="gp-dup" class="gp-part" d="M 78,85 h 12 v 12 h -12 z"/>
+                        <path id="gp-ddown" class="gp-part" d="M 78,109 h 12 v 12 h -12 z"/>
+                        <path id="gp-dleft" class="gp-part" d="M 66,97 h 12 v 12 h -12 z"/>
+                        <path id="gp-dright" class="gp-part" d="M 90,97 h 12 v 12 h -12 z"/>
+                    </g>
 
-            requestAnimationFrame(updateGamepad);
-        }
-        updateGamepad();
+                    <!-- Botones PS (Δ, X, □, O) -->
+                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="85" r="8"/>
+                    <text x="215" y="88" font-size="9" fill="#fff" text-anchor="middle">Δ</text>
+                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="117" r="8"/>
+                    <text x="215" y="120" font-size="9" fill="#fff" text-anchor="middle">✕</text>
+                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="101" r="8"/>
+                    <text x="199" y="104" font-size="9" fill="#fff" text-anchor="middle">□</text>
+                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="101" r="8"/>
+                    <text x="231" y="104" font-size="9" fill="#fff" text-anchor="middle">○</text>
 
-        /* --- LÓGICA TECLADO --- */
-        const lastKey = document.getElementById('kb-last-key');
-        const lastCode = document.getElementById('kb-last-code');
+                    <!-- Sticks Simétricos PS -->
+                    <g>
+                        <circle class="gp-part" cx="115" cy="130" r="18"/>
+                        <circle id="gp-stick-left" class="gp-part stick-head" cx="115" cy="130" r="12" fill="#4a5568"/>
+                    </g>
+                    <g>
+                        <circle class="gp-part" cx="185" cy="130" r="18"/>
+                        <circle id="gp-stick-right" class="gp-part stick-head" cx="185" cy="130" r="12" fill="#4a5568"/>
+                    </g>
+                </svg>`,
 
-        window.addEventListener('keydown', (e) => {
-            lastKey.textContent = `'${e.key}'`;
-            lastCode.textContent = `Code: ${e.code}`;
-            const keyEl = document.getElementById(`K_${e.code}`);
-            if (keyEl) keyEl.classList.add('active');
-        });
+            switch: `
+                <svg class="controller-svg" viewBox="0 0 300 220">
+                    <rect id="gp-t2-l" class="gp-part gp-trigger" x="45" y="8" width="45" height="18" rx="4"/>
+                    <text x="67" y="21" font-size="9" fill="#aaa" text-anchor="middle">ZL / T2</text>
+                    <rect id="gp-t2-r" class="gp-part gp-trigger" x="210" y="8" width="45" height="18" rx="4"/>
+                    <text x="232" y="21" font-size="9" fill="#aaa" text-anchor="middle">ZR / T2</text>
 
-        window.addEventListener('keyup', (e) => {
-            const keyEl = document.getElementById(`K_${e.code}`);
-            if (keyEl) keyEl.classList.remove('active');
-        });
+                    <rect id="gp-t1-l" class="gp-part" x="45" y="30" width="55" height="14" rx="4"/>
+                    <text x="72" y="41" font-size="9" fill="#fff" text-anchor="middle">L / T1</text>
+                    <rect id="gp-t1-r" class="gp-part" x="200" y="30" width="55" height="14" rx="4"/>
+                    <text x="227" y="41" font-size="9" fill="#fff" text-anchor="middle">R / T1</text>
 
-        /* --- LÓGICA TÁCTIL --- */
-        const touchPad = document.getElementById('touch-pad');
-        const touchCount = document.getElementById('touch-count');
-        const touchCoords = document.getElementById('touch-coords');
-        const colors = ['#00f2fe', '#00ff87', '#ff0080', '#7928ca', '#ffb703'];
+                    <path class="gp-part" d="M 50,50 Q 150,30 250,50 Q 290,90 270,180 Q 230,200 200,150 Q 150,160 100,150 Q 70,200 30,180 Q 10,90 50,50 Z"/>
 
-        function handleTouch(e) {
-            e.preventDefault();
-            touchPad.querySelectorAll('.touch-marker').forEach(m => m.remove());
+                    <circle id="gp-btn-8" class="gp-part" cx="125" cy="94" r="5"/>
+                    <text x="125" y="97" font-size="8" fill="#fff" text-anchor="middle">-</text>
+                    <circle id="gp-btn-9" class="gp-part" cx="175" cy="94" r="5"/>
+                    <text x="175" y="97" font-size="8" fill="#fff" text-anchor="middle">+</text>
 
-            const touches = e.touches;
-            touchCount.textContent = touches.length;
-            touchCoords.innerHTML = '';
-
-            const rect = touchPad.getBoundingClientRect();
-
-            for (let i = 0; i < touches.length; i++) {
-                const t = touches[i];
-                const x = Math.round(t.clientX - rect.left);
-                const y = Math.round(t.clientY - rect.top);
-                const color = colors[i % colors.length];
-
-                const marker = document.createElement('div');
-                marker.className = 'touch-marker';
-                marker.style.left = `${x}px`;
-                marker.style.top = `${y}px`;
-                marker.style.background = `${color}44`;
-                marker.style.borderColor = color;
-                marker.style.color = color;
-                marker.textContent = i + 1;
-                touchPad.appendChild(marker);
-
-                touchCoords.innerHTML += `Punto ${i + 1}: (${x}px, ${y}px)<br>`;
-            }
-        }
-
-        ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(evt => {
-            touchPad.addEventListener(evt, handleTouch);
-        });
-    </script>
-</body>
-</html>
+                    <g id="gp-dpad">
+                        <path id="gp-dup" class="gp-part" d="M 90,115 h 12 v 12 h -12 z
