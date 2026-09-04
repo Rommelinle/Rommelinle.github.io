@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de ROMs N64</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .controls {
+            margin-bottom: 15px;
+        }
+        select {
+            padding: 8px 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+        }
+        #game-container {
+            width: 640px;
+            height: 480px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
 
+    <h2>Emulador N64 Multi-Juego</h2>
+
+    <!-- Menú desplegable para elegir la ROM -->
+    <div class="controls">
+        <label for="rom-select">Selecciona un juego: </label>
+        <select id="rom-select" onchange="cargarJuego(this.value)">
+            <option value="SSSmash_Remix_2.0.0.z64">smash remix</option>
+            <option value="Mario Kart 64 (USA).n64">Mario Kart 64</option>
+            <option value="Mortal Kombat Trilogy (USA) (Rev B).n64">Mortal kombat trilogí</option>
+        </select>
+    </div>
+
+    <!-- Contenedor dinámico del emulador -->
+    <div id="game-container"></div>
+
+    <script type="text/javascript">
+        function cargarJuego(romPath) {
+            const container = document.getElementById('game-container');
+            
+            // 1. Limpiar el contenedor actual para destruir la instancia previa
+            container.innerHTML = '';
+
+            // 2. Definir las variables globales de EmulatorJS con la nueva ROM
+            window.EJS_player = '#game-container';
+            window.EJS_core = 'n64';
+            window.EJS_gameUrl = romPath;
+            window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+
+            // 3. Crear y recargar el script loader.js dinámicamente
+            const script = document.createElement('script');
+            script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+            container.appendChild(script);
+        }
+
+        // Cargar el primer juego al abrir la página por primera vez
+        cargarJuego(document.getElementById('rom-select').value);
+    </script>
+
+</body>
+</html>
