@@ -1,467 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Tester Pro Multi-Gamepad</title>
-    <style>
-        :root {
-            --bg-dark: #12161f;
-            --card-bg: #1a202c;
-            --accent-cyan: #00f2fe;
-            --accent-green: #00ff87;
-            --accent-purple: #7928ca;
-            --accent-orange: #ff0080;
-            --text-light: #e2e8f0;
-            --text-dim: #94a3b8;
-        }
-
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        body {
-            background: radial-gradient(circle at top, #1e293b 0%, var(--bg-dark) 100%);
-            color: var(--text-light);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 20px 10px;
-            min-height: 100vh;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.subtitle {
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #2d3748;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            border-bottom: 1px solid #2d3748;
-            padding-bottom: 12px;
-            margin-bottom: 15px;
-        }
-
-        /* --- SELECTOR DE MANDO --- */
-        select.gp-selector {
-            background: #2d3748;
-            color: #fff;
-            border: 1px solid #4a5568;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* --- VISTA DE MANDO --- */
-        .controller-wrapper {
-            position: relative;
-            width: 280px;
-            height: 200px;
-            margin: 10px auto;
-        }
-
-        .controller-svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .gp-part {
-            fill: #2d3748;
-            stroke: #4a5568;
-            stroke-width: 2;
-            transition: all 0.08s ease;
-        }
-
-        .gp-part.active {
-            fill: var(--accent-cyan) !important;
-            stroke: var(--accent-cyan) !important;
-            filter: drop-shadow(0 0 8px var(--accent-cyan));
-        }
-
-        .gp-btn-abxy.active {
-            fill: var(--accent-green) !important;
-            stroke: var(--accent-green) !important;
-            filter: drop-shadow(0 0 8px var(--accent-green));
-        }
-
-        .gp-trigger.active {
-            fill: var(--accent-orange) !important;
-            stroke: var(--accent-orange) !important;
-            filter: drop-shadow(0 0 8px var(--accent-orange));
-        }
-
-        .stick-head {
-            transition: transform 0.05s linear;
-        }
-
-        .info-list {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-top: 15px;
-            line-height: 1.6;
-        }
-
-        .info-list span {
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-
-        /* --- TECLADO VIRTUAL --- */
-        .keyboard-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 10px;
-        }
-
-        .kb-row {
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .key {
-            background: #2d3748;
-            border: 1px solid #4a5568;
-            color: var(--text-light);
-            border-radius: 5px;
-            padding: 8px 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            min-width: 24px;
-            text-align: center;
-            flex: 1;
-            transition: all 0.05s;
-        }
-
-        .key.active {
-            background: var(--accent-orange) !important;
-            border-color: var(--accent-orange) !important;
-            color: #fff;
-            box-shadow: 0 0 10px var(--accent-orange);
-            transform: translateY(2px);
-        }
-
-        .key.wide-1 { flex: 1.5; }
-        .key.wide-2 { flex: 2; }
-        .key.space { flex: 5; }
-
-        .key-info-box {
-            background: #111827;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            text-align: center;
-            border: 1px solid #1f2937;
-        }
-
-        /* --- PANTALLA TÁCTIL --- */
-        .touch-pad {
-            width: 100%;
-            height: 230px;
-            background: #0f172a;
-            border: 2px dashed #334155;
-            border-radius: 12px;
-            position: relative;
-            touch-action: none;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #475569;
-            font-weight: 600;
-        }
-
-        .touch-marker {
-            position: absolute;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            animation: pulse 1.5s infinite alternate;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #fff;
-            box-shadow: 0 0 15px currentColor;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.8; }
-            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba de Dispositivos de Entrada</title>
 </head>
 <body>
 
-    <h1>Prueba de Dispositivos de Entrada</h1>
-    <p class="subtitle">Prueba mandos por USB/Bluetooth, teclados físicos y multitáctil en tiempo real</p>
+  <div id="contenedor-mando">
+    <h2>Mando (Gamepad)</h2>
+    <p id="estado">Estado: Desconectado (presiona un botón)</p>
+    <p id="mando-nombre">Mando: Ninguno</p>
+    <p id="gatillos">Gatillos T2: L2/T2: 0.00 | R2/T2: 0.00</p>
+    <p id="stick-izq">Stick Izquierdo: X: 0.00, Y: 0.00</p>
+    <p id="stick-der">Stick Derecho: X: 0.00, Y: 0.00</p>
+  </div>
 
-    <div class="main-grid">
+  <script>
+    function updateGamepadLoop() {
+      const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+      
+      let gp = null;
+      for (let i = 0; i < gamepads.length; i++) {
+        if (gamepads[i]) {
+          gp = gamepads[i];
+          break;
+        }
+      }
 
-        <!-- CARD 1: MANDO (GAMEPAD) -->
-        <div class="card">
-            <div class="card-header">
-                <span>🎮 MANDO (GAMEPAD)</span>
-                <!-- Selector de tipo de mando -->
-                <select id="gp-type-select" class="gp-selector" onchange="switchGamepadLayout(this.value)">
-                    <option value="xbox">Xbox / Genérico (X3)</option>
-                    <option value="ps">PlayStation (DualShock)</option>
-                    <option value="switch">Nintendo Switch / N64</option>
-                </select>
-            </div>
-            
-            <div class="controller-wrapper" id="svg-container">
-                <!-- El SVG se renderiza dinámicamente mediante JS según la opción elegida -->
-            </div>
+      if (gp) {
+        document.getElementById('estado').textContent = 'Estado: Conectado';
+        document.getElementById('mando-nombre').textContent = `Mando: ${gp.id}`;
 
-            <div class="info-list">
-                Estado: <span id="gp-status" style="color:#ef4444;">Desconectado (presiona un botón)</span><br>
-                Mando: <span id="gp-name">Ninguno</span><br>
-                Gatillos T2: <span id="gp-val-triggers">L2/T2: 0.00 | R2/T2: 0.00</span><br>
-                Stick Izquierdo: <span id="gp-val-l">X: 0.00, Y: 0.00</span><br>
-                Stick Derecho: <span id="gp-val-r">X: 0.00, Y: 0.00</span>
-            </div>
-        </div>
+        const l2Val = gp.buttons[6] ? gp.buttons[6].value : (gp.axes[2] || 0);
+        const r2Val = gp.buttons[7] ? gp.buttons[7].value : (gp.axes[5] || 0);
 
-        <!-- CARD 2: TECLADO VIRTUAL -->
-        <div class="card">
-            <div class="card-header">⌨️ PRUEBA DE TECLADO</div>
+        document.getElementById('gatillos').textContent = 
+          `Gatillos T2: L2/T2: ${Number(l2Val).toFixed(2)} | R2/T2: ${Number(r2Val).toFixed(2)}`;
 
-            <div class="key-info-box">
-                Última tecla: <span id="kb-last-key" style="color:var(--accent-orange); font-weight:bold;">Ninguna</span><br>
-                <small id="kb-last-code" style="color:var(--text-dim);">Code: -</small>
-            </div>
+        const axisLX = gp.axes[0] ? Number(gp.axes[0]).toFixed(2) : '0.00';
+        const axisLY = gp.axes[1] ? Number(gp.axes[1]).toFixed(2) : '0.00';
+        const axisRX = gp.axes[2] ? Number(gp.axes[2]).toFixed(2) : '0.00';
+        const axisRY = gp.axes[3] ? Number(gp.axes[3]).toFixed(2) : '0.00';
 
-            <div class="keyboard-wrapper" id="keyboard-ui">
-                <div class="kb-row">
-                    <div class="key" id="K_Backquote">`</div>
-                    <div class="key" id="K_Digit1">1</div>
-                    <div class="key" id="K_Digit2">2</div>
-                    <div class="key" id="K_Digit3">3</div>
-                    <div class="key" id="K_Digit4">4</div>
-                    <div class="key" id="K_Digit5">5</div>
-                    <div class="key" id="K_Digit6">6</div>
-                    <div class="key" id="K_Digit7">7</div>
-                    <div class="key" id="K_Digit8">8</div>
-                    <div class="key" id="K_Digit9">9</div>
-                    <div class="key" id="K_Digit0">0</div>
-                </div>
-                <div class="kb-row">
-                    <div class="key" id="K_KeyQ">Q</div>
-                    <div class="key" id="K_KeyW">W</div>
-                    <div class="key" id="K_KeyE">E</div>
-                    <div class="key" id="K_KeyR">R</div>
-                    <div class="key" id="K_KeyT">T</div>
-                    <div class="key" id="K_KeyY">Y</div>
-                    <div class="key" id="K_KeyU">U</div>
-                    <div class="key" id="K_KeyI">I</div>
-                    <div class="key" id="K_KeyO">O</div>
-                    <div class="key" id="K_KeyP">P</div>
-                </div>
-                <div class="kb-row">
-                    <div class="key" id="K_KeyA">A</div>
-                    <div class="key" id="K_KeyS">S</div>
-                    <div class="key" id="K_KeyD">D</div>
-                    <div class="key" id="K_KeyF">F</div>
-                    <div class="key" id="K_KeyG">G</div>
-                    <div class="key" id="K_KeyH">H</div>
-                    <div class="key" id="K_KeyJ">J</div>
-                    <div class="key" id="K_KeyK">K</div>
-                    <div class="key" id="K_KeyL">L</div>
-                </div>
-                <div class="kb-row">
-                    <div class="key wide-1" id="K_ShiftLeft">Shift</div>
-                    <div class="key" id="K_KeyZ">Z</div>
-                    <div class="key" id="K_KeyX">X</div>
-                    <div class="key" id="K_KeyC">C</div>
-                    <div class="key" id="K_KeyV">V</div>
-                    <div class="key" id="K_KeyB">B</div>
-                    <div class="key" id="K_KeyN">N</div>
-                    <div class="key" id="K_KeyM">M</div>
-                    <div class="key wide-1" id="K_ArrowUp">↑</div>
-                </div>
-                <div class="kb-row">
-                    <div class="key wide-1" id="K_ControlLeft">Ctrl</div>
-                    <div class="key wide-1" id="K_AltLeft">Alt</div>
-                    <div class="key space" id="K_Space">Espacio</div>
-                    <div class="key" id="K_ArrowLeft">←</div>
-                    <div class="key" id="K_ArrowDown">↓</div>
-                    <div class="key" id="K_ArrowRight">→</div>
-                </div>
-            </div>
-        </div>
+        document.getElementById('stick-izq').textContent = `Stick Izquierdo: X: ${axisLX}, Y: ${axisLY}`;
+        document.getElementById('stick-der').textContent = `Stick Derecho: X: ${axisRX}, Y: ${axisRY}`;
+      } else {
+        document.getElementById('estado').textContent = 'Estado: Desconectado (presiona un botón)';
+        document.getElementById('mando-nombre').textContent = 'Mando: Ninguno';
+      }
 
-        <!-- CARD 3: MULTITÁCTIL -->
-        <div class="card">
-            <div class="card-header">📱 PRUEBA TÁCTIL (MULTITOUCH)</div>
+      requestAnimationFrame(updateGamepadLoop);
+    }
 
-            <div class="touch-pad" id="touch-pad">
-                Área de Prueba Táctil
-            </div>
+    window.addEventListener('keydown', () => {});
+    window.addEventListener('touchstart', () => {});
+    window.addEventListener('click', () => {});
 
-            <div class="info-list">
-                Puntos Detectados: <span id="touch-count">0</span><br>
-                <div id="touch-coords" style="font-size:0.8rem; margin-top:5px; max-height: 60px; overflow-y:auto;"></div>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        /* --- SVGS DE LOS DISTINTOS MODELOS DE MANDO --- */
-        const svgTemplates = {
-            xbox: `
-                <svg class="controller-svg" viewBox="0 0 300 220">
-                    <rect id="gp-t2-l" class="gp-part gp-trigger" x="45" y="8" width="45" height="18" rx="4"/>
-                    <text x="67" y="21" font-size="9" fill="#aaa" text-anchor="middle">LT / T2</text>
-                    <rect id="gp-t2-r" class="gp-part gp-trigger" x="210" y="8" width="45" height="18" rx="4"/>
-                    <text x="232" y="21" font-size="9" fill="#aaa" text-anchor="middle">RT / T2</text>
-
-                    <rect id="gp-t1-l" class="gp-part" x="45" y="30" width="55" height="14" rx="4"/>
-                    <text x="72" y="41" font-size="9" fill="#fff" text-anchor="middle">LB / T1</text>
-                    <rect id="gp-t1-r" class="gp-part" x="200" y="30" width="55" height="14" rx="4"/>
-                    <text x="227" y="41" font-size="9" fill="#fff" text-anchor="middle">RB / T1</text>
-
-                    <path class="gp-part" d="M 50,50 Q 150,30 250,50 Q 290,90 270,180 Q 230,200 200,150 Q 150,160 100,150 Q 70,200 30,180 Q 10,90 50,50 Z"/>
-
-                    <rect id="gp-btn-8" class="gp-part" x="120" y="90" width="14" height="8" rx="3"/>
-                    <rect id="gp-btn-9" class="gp-part" x="166" y="90" width="14" height="8" rx="3"/>
-
-                    <g id="gp-dpad">
-                        <path id="gp-dup" class="gp-part" d="M 90,115 h 12 v 12 h -12 z"/>
-                        <path id="gp-ddown" class="gp-part" d="M 90,139 h 12 v 12 h -12 z"/>
-                        <path id="gp-dleft" class="gp-part" d="M 78,127 h 12 v 12 h -12 z"/>
-                        <path id="gp-dright" class="gp-part" d="M 102,127 h 12 v 12 h -12 z"/>
-                    </g>
-
-                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="95" r="8"/>
-                    <text x="215" y="98" font-size="8" fill="#fff" text-anchor="middle">Y</text>
-                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="127" r="8"/>
-                    <text x="215" y="130" font-size="8" fill="#fff" text-anchor="middle">A</text>
-                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="111" r="8"/>
-                    <text x="199" y="114" font-size="8" fill="#fff" text-anchor="middle">X</text>
-                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="111" r="8"/>
-                    <text x="231" y="114" font-size="8" fill="#fff" text-anchor="middle">B</text>
-
-                    <g>
-                        <circle class="gp-part" cx="96" cy="85" r="18"/>
-                        <circle id="gp-stick-left" class="gp-part stick-head" cx="96" cy="85" r="12" fill="#4a5568"/>
-                    </g>
-                    <g>
-                        <circle class="gp-part" cx="170" cy="127" r="18"/>
-                        <circle id="gp-stick-right" class="gp-part stick-head" cx="170" cy="127" r="12" fill="#4a5568"/>
-                    </g>
-                </svg>`,
-            
-            ps: `
-                <svg class="controller-svg" viewBox="0 0 300 220">
-                    <rect id="gp-t2-l" class="gp-part gp-trigger" x="45" y="8" width="45" height="18" rx="4"/>
-                    <text x="67" y="21" font-size="9" fill="#aaa" text-anchor="middle">L2 / T2</text>
-                    <rect id="gp-t2-r" class="gp-part gp-trigger" x="210" y="8" width="45" height="18" rx="4"/>
-                    <text x="232" y="21" font-size="9" fill="#aaa" text-anchor="middle">R2 / T2</text>
-
-                    <rect id="gp-t1-l" class="gp-part" x="45" y="30" width="55" height="14" rx="4"/>
-                    <text x="72" y="41" font-size="9" fill="#fff" text-anchor="middle">L1 / T1</text>
-                    <rect id="gp-t1-r" class="gp-part" x="200" y="30" width="55" height="14" rx="4"/>
-                    <text x="227" y="41" font-size="9" fill="#fff" text-anchor="middle">R1 / T1</text>
-
-                    <path class="gp-part" d="M 50,50 Q 150,40 250,50 Q 290,90 270,180 Q 220,200 190,150 Q 150,155 110,150 Q 80,200 30,180 Q 10,90 50,50 Z"/>
-
-                    <!-- Touchpad / Select-Start PS -->
-                    <rect id="gp-btn-17" class="gp-part" x="110" y="60" width="80" height="30" rx="4"/>
-                    <rect id="gp-btn-8" class="gp-part" x="90" y="65" width="10" height="12" rx="2"/>
-                    <rect id="gp-btn-9" class="gp-part" x="200" y="65" width="10" height="12" rx="2"/>
-
-                    <g id="gp-dpad">
-                        <path id="gp-dup" class="gp-part" d="M 78,85 h 12 v 12 h -12 z"/>
-                        <path id="gp-ddown" class="gp-part" d="M 78,109 h 12 v 12 h -12 z"/>
-                        <path id="gp-dleft" class="gp-part" d="M 66,97 h 12 v 12 h -12 z"/>
-                        <path id="gp-dright" class="gp-part" d="M 90,97 h 12 v 12 h -12 z"/>
-                    </g>
-
-                    <!-- Botones PS (Δ, X, □, O) -->
-                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="85" r="8"/>
-                    <text x="215" y="88" font-size="9" fill="#fff" text-anchor="middle">Δ</text>
-                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="117" r="8"/>
-                    <text x="215" y="120" font-size="9" fill="#fff" text-anchor="middle">✕</text>
-                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="101" r="8"/>
-                    <text x="199" y="104" font-size="9" fill="#fff" text-anchor="middle">□</text>
-                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="101" r="8"/>
-                    <text x="231" y="104" font-size="9" fill="#fff" text-anchor="middle">○</text>
-
-                    <!-- Sticks Simétricos PS -->
-                    <g>
-                        <circle class="gp-part" cx="115" cy="130" r="18"/>
-                        <circle id="gp-stick-left" class="gp-part stick-head" cx="115" cy="130" r="12" fill="#4a5568"/>
-                    </g>
-                    <g>
-                        <circle class="gp-part" cx="185" cy="130" r="18"/>
-                        <circle id="gp-stick-right" class="gp-part stick-head" cx="185" cy="130" r="12" fill="#4a5568"/>
-                    </g>
-                </svg>`,
-
-            switch: `
-                <svg class="controller-svg" viewBox="0 0 300 220">
-                    <rect id="gp-t2-l" class="gp-part gp-trigger" x="45" y="8" width="45" height="18" rx="4"/>
-                    <text x="67" y="21" font-size="9" fill="#aaa" text-anchor="middle">ZL / T2</text>
-                    <rect id="gp-t2-r" class="gp-part gp-trigger" x="210" y="8" width="45" height="18" rx="4"/>
-                    <text x="232" y="21" font-size="9" fill="#aaa" text-anchor="middle">ZR / T2</text>
-
-                    <rect id="gp-t1-l" class="gp-part" x="45" y="30" width="55" height="14" rx="4"/>
-                    <text x="72" y="41" font-size="9" fill="#fff" text-anchor="middle">L / T1</text>
-                    <rect id="gp-t1-r" class="gp-part" x="200" y="30" width="55" height="14" rx="4"/>
-                    <text x="227" y="41" font-size="9" fill="#fff" text-anchor="middle">R / T1</text>
-
-                    <path class="gp-part" d="M 50,50 Q 150,30 250,50 Q 290,90 270,180 Q 230,200 200,150 Q 150,160 100,150 Q 70,200 30,180 Q 10,90 50,50 Z"/>
-
-                    <circle id="gp-btn-8" class="gp-part" cx="125" cy="94" r="5"/>
-                    <text x="125" y="97" font-size="8" fill="#fff" text-anchor="middle">-</text>
-                    <circle id="gp-btn-9" class="gp-part" cx="175" cy="94" r="5"/>
-                    <text x="175" y="97" font-size="8" fill="#fff" text-anchor="middle">+</text>
-
-                    <g id="gp-dpad">
-                        <path id="gp-dup" class="gp-part" d="M 90,115 h 12 v 12 h -12 z
+    requestAnimationFrame(updateGamepadLoop);
+  </script>
+</body>
+</html>
