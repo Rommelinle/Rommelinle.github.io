@@ -3,361 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Tester de Mandos, Teclado y Táctil</title>
+    <title>Tester Pro - Mando, Teclado & Táctil</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --accent: #00adb5;
-            --active-color: #00fff5;
-            --text-color: #eeeeee;
-            --border-color: #333;
+            --bg-dark: #12161f;
+            --card-bg: #1a202c;
+            --accent-cyan: #00f2fe;
+            --accent-green: #00ff87;
+            --accent-purple: #7928ca;
+            --accent-orange: #ff0080;
+            --text-light: #e2e8f0;
+            --text-dim: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0%, var(--bg-dark) 100%);
+            color: var(--text-light);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
-            padding: 15px;
-            box-sizing: border-box;
-            user-select: none;
+            padding: 20px 10px;
+            min-height: 100vh;
         }
 
         h1 {
             text-align: center;
-            color: var(--accent);
-            margin-bottom: 20px;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .grid-container {
+        p.subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .main-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
-        .section-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #2d3748;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
         }
 
-        .section-card h2 {
-            margin-top: 0;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 8px;
-            font-size: 1.2rem;
-            color: var(--accent);
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            border-bottom: 1px solid #2d3748;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
         }
 
-        /* --- Estilos Mando / Gamepad --- */
-        .gamepad-status {
-            font-weight: bold;
-            color: #ff4d4d;
-            margin-bottom: 10px;
+        /* --- VISTA DE MANDO XBOX --- */
+        .controller-wrapper {
+            position: relative;
+            width: 260px;
+            height: 180px;
+            margin: 10px auto;
         }
 
-        .gamepad-status.connected {
-            color: #00ff66;
+        .controller-svg {
+            width: 100%;
+            height: 100%;
         }
 
-        .buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        .gp-part {
+            fill: #2d3748;
+            stroke: #4a5568;
+            stroke-width: 2;
+            transition: all 0.08s ease;
+        }
+
+        .gp-part.active {
+            fill: var(--accent-cyan) !important;
+            stroke: var(--accent-cyan) !important;
+            filter: drop-shadow(0 0 8px var(--accent-cyan));
+        }
+
+        .gp-btn-abxy.active {
+            fill: var(--accent-green) !important;
+            stroke: var(--accent-green) !important;
+            filter: drop-shadow(0 0 8px var(--accent-green));
+        }
+
+        .stick-head {
+            transition: transform 0.05s linear;
+        }
+
+        .info-list {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .info-list span {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        /* --- TECLADO VIRTUAL --- */
+        .keyboard-wrapper {
+            display: flex;
+            flex-direction: column;
             gap: 6px;
             margin-top: 10px;
         }
 
-        .btn-box {
-            background-color: #2a2a2a;
-            border: 1px solid #444;
+        .kb-row {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .key {
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            color: var(--text-light);
+            border-radius: 5px;
             padding: 8px 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 24px;
             text-align: center;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            flex: 1;
             transition: all 0.05s;
         }
 
-        .btn-box.pressed {
-            background-color: var(--active-color);
-            color: #000;
-            font-weight: bold;
-            box-shadow: 0 0 8px var(--active-color);
+        .key.active {
+            background: var(--accent-orange) !important;
+            border-color: var(--accent-orange) !important;
+            color: #fff;
+            box-shadow: 0 0 10px var(--accent-orange);
+            transform: translateY(2px);
         }
 
-        .axes-container {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-            justify-content: space-around;
-        }
+        .key.wide-1 { flex: 1.5; }
+        .key.wide-2 { flex: 2; }
+        .key.space { flex: 5; }
 
-        .axis-box {
-            width: 80px;
-            height: 80px;
-            border: 2px solid #444;
-            border-radius: 50%;
-            position: relative;
-            background-color: #222;
-        }
-
-        .axis-dot {
-            width: 12px;
-            height: 12px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        /* --- Estilos Teclado --- */
-        .key-display {
-            background-color: #2a2a2a;
-            border: 1px solid #444;
-            padding: 10px;
-            border-radius: 6px;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--active-color);
-        }
-
-        .keys-history {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px;
-            max-height: 100px;
-            overflow-y: auto;
-        }
-
-        .key-tag {
-            background: #333;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-
-        /* --- Estilos Táctil --- */
-        .touch-area {
-            width: 100%;
-            height: 200px;
-            background-color: #111;
-            border: 2px dashed var(--accent);
+        .key-info-box {
+            background: #111827;
             border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            border: 1px solid #1f2937;
+        }
+
+        /* --- PANTALLA TÁCTIL --- */
+        .touch-pad {
+            width: 100%;
+            height: 230px;
+            background: #0f172a;
+            border: 2px dashed #334155;
+            border-radius: 12px;
             position: relative;
             touch-action: none;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666;
-            overflow: hidden;
+            color: #475569;
+            font-weight: 600;
         }
 
-        .touch-point {
+        .touch-marker {
             position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: rgba(0, 255, 245, 0.6);
-            border: 2px solid var(--active-color);
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
-            box-shadow: 0 0 10px var(--active-color);
+            animation: pulse 1.5s infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <h1>Tester de Periféricos & Entradas</h1>
+    <h1>Prueba de Dispositivos de Entrada</h1>
+    <p class="subtitle">Prueba mandos por USB/Bluetooth, teclados físicos y multitáctil en tiempo real</p>
 
-    <div class="grid-container">
+    <div class="main-grid">
 
-        <!-- PRUEBA DE MANDO / GAMEPAD -->
-        <div class="section-card">
-            <h2>🎮 Mando / Gamepad</h2>
-            <div id="gamepad-status" class="gamepad-status">Desconectado (presiona un botón)</div>
-            <div id="gamepad-name" style="font-size: 0.85rem; color: #aaa; margin-bottom: 10px;"></div>
+        <!-- CARD 1: MANDO (GAMEPAD) -->
+        <div class="card">
+            <div class="card-header">🎮 PRUEBA DE MANDO (GAMEPAD)</div>
             
-            <div>Botones:</div>
-            <div class="buttons-grid" id="gp-buttons"></div>
+            <div class="controller-wrapper">
+                <svg class="controller-svg" viewBox="0 0 300 200">
+                    <!-- Cuerpo del Mando -->
+                    <path class="gp-part" d="M 50,40 Q 150,20 250,40 Q 290,80 270,170 Q 230,190 200,140 Q 150,150 100,140 Q 70,190 30,170 Q 10,80 50,40 Z"/>
+                    
+                    <!-- Gatillos y Bumpers -->
+                    <rect id="gp-l1" class="gp-part" x="50" y="20" width="50" height="12" rx="4"/>
+                    <rect id="gp-r1" class="gp-part" x="200" y="20" width="50" height="12" rx="4"/>
 
-            <div style="margin-top: 15px;">Sticks Analógicos:</div>
-            <div class="axes-container">
-                <div class="axis-box" id="stick-left"><div class="axis-dot" id="dot-left"></div></div>
-                <div class="axis-box" id="stick-right"><div class="axis-dot" id="dot-right"></div></div>
+                    <!-- D-Pad (Cruceta) -->
+                    <g id="gp-dpad">
+                        <path id="gp-dup" class="gp-part" d="M 90,105 h 12 v 12 h -12 z"/>
+                        <path id="gp-ddown" class="gp-part" d="M 90,129 h 12 v 12 h -12 z"/>
+                        <path id="gp-dleft" class="gp-part" d="M 78,117 h 12 v 12 h -12 z"/>
+                        <path id="gp-dright" class="gp-part" d="M 102,117 h 12 v 12 h -12 z"/>
+                    </g>
+
+                    <!-- Botones ABXY -->
+                    <circle id="gp-btn-3" class="gp-part gp-btn-abxy" cx="215" cy="85" r="8"/> <!-- Y -->
+                    <circle id="gp-btn-0" class="gp-part gp-btn-abxy" cx="215" cy="117" r="8"/> <!-- A -->
+                    <circle id="gp-btn-2" class="gp-part gp-btn-abxy" cx="199" cy="101" r="8"/> <!-- X -->
+                    <circle id="gp-btn-1" class="gp-part gp-btn-abxy" cx="231" cy="101" r="8"/> <!-- B -->
+
+                    <!-- Sticks Analogicos -->
+                    <g id="gp-stick-left-group">
+                        <circle class="gp-part" cx="96" cy="75" r="18"/>
+                        <circle id="gp-stick-left" class="gp-part stick-head" cx="96" cy="75" r="12" fill="#4a5568"/>
+                    </g>
+                    <g id="gp-stick-right-group">
+                        <circle class="gp-part" cx="170" cy="117" r="18"/>
+                        <circle id="gp-stick-right" class="gp-part stick-head" cx="170" cy="117" r="12" fill="#4a5568"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="info-list">
+                Estado: <span id="gp-status" style="color:#ef4444;">Desconectado (presiona un botón)</span><br>
+                Mando: <span id="gp-name">Ninguno</span><br>
+                Stick Izquierdo: <span id="gp-val-l">X: 0.00, Y: 0.00</span><br>
+                Stick Derecho: <span id="gp-val-r">X: 0.00, Y: 0.00</span>
             </div>
         </div>
 
-        <!-- PRUEBA DE TECLADO -->
-        <div class="section-card">
-            <h2>⌨️ Teclado</h2>
-            <p style="font-size: 0.85rem; color: #aaa;">Presiona cualquier tecla para probar:</p>
-            <div class="key-display" id="key-display">Esperando tecla...</div>
-            <div style="margin-top: 10px; font-size: 0.85rem;">Historial reciente:</div>
-            <div class="keys-history" id="keys-history"></div>
+        <!-- CARD 2: TECLADO VIRTUAL -->
+        <div class="card">
+            <div class="card-header">⌨️ PRUEBA DE TECLADO</div>
+
+            <div class="key-info-box">
+                Última tecla: <span id="kb-last-key" style="color:var(--accent-orange); font-weight:bold;">Ninguna</span><br>
+                <small id="kb-last-code" style="color:var(--text-dim);">Code: -</small>
+            </div>
+
+            <div class="keyboard-wrapper" id="keyboard-ui">
+                <div class="kb-row">
+                    <div class="key" id="K_Backquote">`</div>
+                    <div class="key" id="K_Digit1">1</div>
+                    <div class="key" id="K_Digit2">2</div>
+                    <div class="key" id="K_Digit3">3</div>
+                    <div class="key" id="K_Digit4">4</div>
+                    <div class="key" id="K_Digit5">5</div>
+                    <div class="key" id="K_Digit6">6</div>
+                    <div class="key" id="K_Digit7">7</div>
+                    <div class="key" id="K_Digit8">8</div>
+                    <div class="key" id="K_Digit9">9</div>
+                    <div class="key" id="K_Digit0">0</div>
+                </div>
+                <div class="kb-row">
+                    <div class="key" id="K_KeyQ">Q</div>
+                    <div class="key" id="K_KeyW">W</div>
+                    <div class="key" id="K_KeyE">E</div>
+                    <div class="key" id="K_KeyR">R</div>
+                    <div class="key" id="K_KeyT">T</div>
+                    <div class="key" id="K_KeyY">Y</div>
+                    <div class="key" id="K_KeyU">U</div>
+                    <div class="key" id="K_KeyI">I</div>
+                    <div class="key" id="K_KeyO">O</div>
+                    <div class="key" id="K_KeyP">P</div>
+                </div>
+                <div class="kb-row">
+                    <div class="key" id="K_KeyA">A</div>
+                    <div class="key" id="K_KeyS">S</div>
+                    <div class="key" id="K_KeyD">D</div>
+                    <div class="key" id="K_KeyF">F</div>
+                    <div class="key" id="K_KeyG">G</div>
+                    <div class="key" id="K_KeyH">H</div>
+                    <div class="key" id="K_KeyJ">J</div>
+                    <div class="key" id="K_KeyK">K</div>
+                    <div class="key" id="K_KeyL">L</div>
+                </div>
+                <div class="kb-row">
+                    <div class="key wide-1" id="K_ShiftLeft">Shift</div>
+                    <div class="key" id="K_KeyZ">Z</div>
+                    <div class="key" id="K_KeyX">X</div>
+                    <div class="key" id="K_KeyC">C</div>
+                    <div class="key" id="K_KeyV">V</div>
+                    <div class="key" id="K_KeyB">B</div>
+                    <div class="key" id="K_KeyN">N</div>
+                    <div class="key" id="K_KeyM">M</div>
+                    <div class="key wide-1" id="K_ArrowUp">↑</div>
+                </div>
+                <div class="kb-row">
+                    <div class="key wide-1" id="K_ControlLeft">Ctrl</div>
+                    <div class="key wide-1" id="K_AltLeft">Alt</div>
+                    <div class="key space" id="K_Space">Espacio</div>
+                    <div class="key" id="K_ArrowLeft">←</div>
+                    <div class="key" id="K_ArrowDown">↓</div>
+                    <div class="key" id="K_ArrowRight">→</div>
+                </div>
+            </div>
         </div>
 
-        <!-- PRUEBA TÁCTIL -->
-        <div class="section-card">
-            <h2>📱 Pantalla Táctil</h2>
-            <p style="font-size: 0.85rem; color: #aaa;">Toca/arrastra en el área para probar multitáctil:</p>
-            <div class="touch-area" id="touch-area">
-                Toca aquí
+        <!-- CARD 3: MULTITÁCTIL -->
+        <div class="card">
+            <div class="card-header">📱 PRUEBA TÁCTIL (MULTITOUCH)</div>
+
+            <div class="touch-pad" id="touch-pad">
+                Área de Prueba Táctil
             </div>
-            <div id="touch-info" style="margin-top: 10px; font-size: 0.85rem; color: #aaa;">
-                Puntos de contacto: 0
+
+            <div class="info-list">
+                Puntos Detectados: <span id="touch-count">0</span><br>
+                <div id="touch-coords" style="font-size:0.8rem; margin-top:5px; max-height: 60px; overflow-y:auto;"></div>
             </div>
         </div>
 
     </div>
 
     <script>
-        /* ===================================================
-           1. PRUEBA DE TECLADO
-        =================================================== */
-        const keyDisplay = document.getElementById('key-display');
-        const keysHistory = document.getElementById('keys-history');
-        const historyList = [];
+        /* --- LÓGICA MANDO --- */
+        const gpStatus = document.getElementById('gp-status');
+        const gpName = document.getElementById('gp-name');
+        const gpValL = document.getElementById('gp-val-l');
+        const gpValR = document.getElementById('gp-val-r');
 
-        window.addEventListener('keydown', (e) => {
-            e.preventDefault();
-            const keyInfo = `Tecla: ${e.key} | Code: ${e.code}`;
-            keyDisplay.textContent = keyInfo;
-
-            // Historial
-            if (!historyList.includes(e.code)) {
-                historyList.unshift(e.code);
-                if (historyList.length > 12) historyList.pop();
-                
-                keysHistory.innerHTML = '';
-                historyList.forEach(k => {
-                    const tag = document.createElement('span');
-                    tag.className = 'key-tag';
-                    tag.textContent = k;
-                    keysHistory.appendChild(tag);
-                });
-            }
-        });
-
-        /* ===================================================
-           2. PRUEBA TÁCTIL (MULTITOUCH)
-        =================================================== */
-        const touchArea = document.getElementById('touch-area');
-        const touchInfo = document.getElementById('touch-info');
-
-        function handleTouch(e) {
-            e.preventDefault();
-            // Limpiar puntos previos
-            const existingDots = touchArea.querySelectorAll('.touch-point');
-            existingDots.forEach(dot => dot.remove());
-
-            const touches = e.touches;
-            touchInfo.textContent = `Puntos de contacto activos: ${touches.length}`;
-
-            const rect = touchArea.getBoundingClientRect();
-
-            for (let i = 0; i < touches.length; i++) {
-                const touch = touches[i];
-                const x = touch.clientX - rect.left;
-                const y = touch.clientY - rect.top;
-
-                const dot = document.createElement('div');
-                dot.className = 'touch-point';
-                dot.style.left = `${x}px`;
-                dot.style.top = `${y}px`;
-                touchArea.appendChild(dot);
-            }
-        }
-
-        touchArea.addEventListener('touchstart', handleTouch);
-        touchArea.addEventListener('touchmove', handleTouch);
-        touchArea.addEventListener('touchend', handleTouch);
-        touchArea.addEventListener('touchcancel', handleTouch);
-
-        /* ===================================================
-           3. PRUEBA DE MANDO (GAMEPAD API)
-        =================================================== */
-        const statusDiv = document.getElementById('gamepad-status');
-        const nameDiv = document.getElementById('gamepad-name');
-        const buttonsContainer = document.getElementById('gp-buttons');
-        const dotLeft = document.getElementById('dot-left');
-        const dotRight = document.getElementById('dot-right');
-
-        // Generar 17 botones estándar de N64 / Xbox / PlayStation
-        for (let i = 0; i < 17; i++) {
-            const btnBox = document.createElement('div');
-            btnBox.className = 'btn-box';
-            btnBox.id = `btn-${i}`;
-            btnBox.textContent = `B${i}`;
-            buttonsContainer.appendChild(btnBox);
-        }
+        const stickL = document.getElementById('gp-stick-left');
+        const stickR = document.getElementById('gp-stick-right');
 
         function updateGamepad() {
             const gamepads = navigator.getGamepads();
             const gp = gamepads[0] || gamepads[1] || gamepads[2] || gamepads[3];
 
             if (gp) {
-                statusDiv.textContent = "¡Mando Conectado!";
-                statusDiv.className = "gamepad-status connected";
-                nameDiv.textContent = gp.id;
+                gpStatus.textContent = "Conectado";
+                gpStatus.style.color = "var(--accent-green)";
+                gpName.textContent = gp.id.substring(0, 25) + "...";
 
-                // Actualizar Botones
-                gp.buttons.forEach((btn, idx) => {
-                    const btnEl = document.getElementById(`btn-${idx}`);
-                    if (btnEl) {
-                        if (btn.pressed) {
-                            btnEl.classList.add('pressed');
-                        } else {
-                            btnEl.classList.remove('pressed');
-                        }
-                    }
+                // Mapeo ABXY
+                [0, 1, 2, 3].forEach(i => {
+                    const btn = document.getElementById(`gp-btn-${i}`);
+                    if (btn) btn.classList.toggle('active', gp.buttons[i]?.pressed);
                 });
 
-                // Actualizar Sticks (Ejes)
-                // Left Stick (Axes 0, 1)
-                if (gp.axes.length >= 2) {
-                    const lx = gp.axes[0] * 35; 
-                    const ly = gp.axes[1] * 35;
-                    dotLeft.style.transform = `translate(calc(-50% + ${lx}px), calc(-50% + ${ly}px))`;
-                }
+                // Bumpers L1/R1
+                document.getElementById('gp-l1')?.classList.toggle('active', gp.buttons[4]?.pressed);
+                document.getElementById('gp-r1')?.classList.toggle('active', gp.buttons[5]?.pressed);
 
-                // Right Stick (Axes 2, 3)
-                if (gp.axes.length >= 4) {
-                    const rx = gp.axes[2] * 35;
-                    const ry = gp.axes[3] * 35;
-                    dotRight.style.transform = `translate(calc(-50% + ${rx}px), calc(-50% + ${ry}px))`;
-                }
+                // D-Pad
+                document.getElementById('gp-dup')?.classList.toggle('active', gp.buttons[12]?.pressed);
+                document.getElementById('gp-ddown')?.classList.toggle('active', gp.buttons[13]?.pressed);
+                document.getElementById('gp-dleft')?.classList.toggle('active', gp.buttons[14]?.pressed);
+                document.getElementById('gp-dright')?.classList.toggle('active', gp.buttons[15]?.pressed);
+
+                // Sticks Analogicos
+                const lx = (gp.axes[0] || 0).toFixed(2);
+                const ly = (gp.axes[1] || 0).toFixed(2);
+                const rx = (gp.axes[2] || 0).toFixed(2);
+                const ry = (gp.axes[3] || 0).toFixed(2);
+
+                gpValL.textContent = `X: ${lx}, Y: ${ly}`;
+                gpValR.textContent = `X: ${rx}, Y: ${ry}`;
+
+                stickL.style.transform = `translate(${lx * 8}px, ${ly * 8}px)`;
+                stickR.style.transform = `translate(${rx * 8}px, ${ry * 8}px)`;
 
             } else {
-                statusDiv.textContent = "Desconectado (presiona un botón)";
-                statusDiv.className = "gamepad-status";
-                nameDiv.textContent = "";
+                gpStatus.textContent = "Desconectado (presiona un botón)";
+                gpStatus.style.color = "#ef4444";
+                gpName.textContent = "Ninguno";
             }
 
             requestAnimationFrame(updateGamepad);
         }
-
-        window.addEventListener("gamepadconnected", () => {
-            statusDiv.textContent = "Mando Detectado";
-        });
-
-        window.addEventListener("gamepaddisconnected", () => {
-            statusDiv.textContent = "Mando Desconectado";
-        });
-
-        // Iniciar loop de lectura del mando
         updateGamepad();
+
+        /* --- LÓGICA TECLADO --- */
+        const lastKey = document.getElementById('kb-last-key');
+        const lastCode = document.getElementById('kb-last-code');
+
+        window.addEventListener('keydown', (e) => {
+            lastKey.textContent = `'${e.key}'`;
+            lastCode.textContent = `Code: ${e.code}`;
+            const keyEl = document.getElementById(`K_${e.code}`);
+            if (keyEl) keyEl.classList.add('active');
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const keyEl = document.getElementById(`K_${e.code}`);
+            if (keyEl) keyEl.classList.remove('active');
+        });
+
+        /* --- LÓGICA TÁCTIL --- */
+        const touchPad = document.getElementById('touch-pad');
+        const touchCount = document.getElementById('touch-count');
+        const touchCoords = document.getElementById('touch-coords');
+        const colors = ['#00f2fe', '#00ff87', '#ff0080', '#7928ca', '#ffb703'];
+
+        function handleTouch(e) {
+            e.preventDefault();
+            touchPad.querySelectorAll('.touch-marker').forEach(m => m.remove());
+
+            const touches = e.touches;
+            touchCount.textContent = touches.length;
+            touchCoords.innerHTML = '';
+
+            const rect = touchPad.getBoundingClientRect();
+
+            for (let i = 0; i < touches.length; i++) {
+                const t = touches[i];
+                const x = Math.round(t.clientX - rect.left);
+                const y = Math.round(t.clientY - rect.top);
+                const color = colors[i % colors.length];
+
+                const marker = document.createElement('div');
+                marker.className = 'touch-marker';
+                marker.style.left = `${x}px`;
+                marker.style.top = `${y}px`;
+                marker.style.background = `${color}44`;
+                marker.style.borderColor = color;
+                marker.style.color = color;
+                marker.textContent = i + 1;
+                touchPad.appendChild(marker);
+
+                touchCoords.innerHTML += `Punto ${i + 1}: (${x}px, ${y}px)<br>`;
+            }
+        }
+
+        ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(evt => {
+            touchPad.addEventListener(evt, handleTouch);
+        });
     </script>
 </body>
-  </html>
-  
+</html>
