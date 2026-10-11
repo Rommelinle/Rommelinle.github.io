@@ -4,14 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Comandos Minecraft Bedrock Ultimate</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!window.tailwind) {
+                document.documentElement.classList.add('tailwind-fallback');
+                document.body.classList.add('tailwind-fallback');
+            }
+        });
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .pixel-font { font-family: 'Press Start 2P', monospace; }
+        :root {
+            color-scheme: dark;
+            --bg: #020817;
+            --panel: rgba(15, 23, 42, 0.82);
+            --panel-strong: #0f172a;
+            --panel-soft: #111827;
+            --border: rgba(51, 65, 85, 0.9);
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #10b981;
+            --accent-2: #2dd4bf;
+            --warning: #fbbf24;
+            --danger: #ef4444;
+        }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            line-height: 1.5;
+        }
+
+        code, pre, .font-mono {
+            font-family: 'JetBrains Mono', 'SFMono-Regular', monospace;
+        }
+
+        .pixel-font {
+            font-family: 'Press Start 2P', monospace;
+        }
 
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -27,6 +66,201 @@
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: rgba(16, 185, 129, 0.8);
+        }
+
+        /* Fallback when Tailwind CDN does not load */
+        body.tailwind-fallback,
+        html.tailwind-fallback {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        body.tailwind-fallback * {
+            box-sizing: border-box;
+        }
+
+        body.tailwind-fallback header {
+            background: rgba(2, 8, 23, 0.9);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+            backdrop-filter: blur(18px);
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        body.tailwind-fallback .max-w-7xl {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        body.tailwind-fallback header > div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 64px;
+            gap: 1rem;
+        }
+
+        body.tailwind-fallback main {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem 1rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        body.tailwind-fallback section {
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(51, 65, 85, 0.9);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(2, 6, 23, 0.35);
+        }
+
+        body.tailwind-fallback #command-categories {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.5rem;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        body.tailwind-fallback #command-categories button,
+        body.tailwind-fallback button,
+        body.tailwind-fallback input,
+        body.tailwind-fallback select {
+            font: inherit;
+        }
+
+        body.tailwind-fallback #command-categories button {
+            background: rgba(15, 23, 42, 0.7);
+            color: var(--text);
+            border: 1px solid rgba(51, 65, 85, 0.9);
+            border-radius: 0.75rem;
+            padding: 0.5rem 0.4rem;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+
+        body.tailwind-fallback #command-categories button.active,
+        body.tailwind-fallback #command-categories button:hover {
+            background: rgba(16, 185, 129, 0.18);
+            border-color: rgba(16, 185, 129, 0.65);
+            color: #a7f3d0;
+        }
+
+        body.tailwind-fallback input,
+        body.tailwind-fallback select,
+        body.tailwind-fallback textarea {
+            width: 100%;
+            background: #020817;
+            border: 1px solid rgba(51, 65, 85, 0.9);
+            border-radius: 0.75rem;
+            color: var(--text);
+            padding: 0.7rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        body.tailwind-fallback .bg-slate-950,
+        body.tailwind-fallback [id="output-code-highlighted"],
+        body.tailwind-fallback .bg-slate-900,
+        body.tailwind-fallback .bg-slate-950\/60 {
+            background: #020817;
+        }
+
+        body.tailwind-fallback .text-slate-400,
+        body.tailwind-fallback .text-slate-500,
+        body.tailwind-fallback .text-slate-300 {
+            color: var(--muted);
+        }
+
+        body.tailwind-fallback .text-emerald-400,
+        body.tailwind-fallback .text-emerald-300 {
+            color: #6ee7b7;
+        }
+
+        body.tailwind-fallback .rounded-2xl,
+        body.tailwind-fallback .rounded-xl,
+        body.tailwind-fallback .rounded-lg {
+            border-radius: 0.9rem;
+        }
+
+        body.tailwind-fallback .shadow-xl,
+        body.tailwind-fallback .shadow-2xl {
+            box-shadow: 0 18px 30px -10px rgba(2, 6, 23, 0.35);
+        }
+
+        body.tailwind-fallback .space-y-2 > * + *,
+        body.tailwind-fallback .space-y-4 > * + *,
+        body.tailwind-fallback .space-y-6 > * + *,
+        body.tailwind-fallback .flex-col > * + * {
+            margin-top: 0.5rem;
+        }
+
+        body.tailwind-fallback .flex,
+        body.tailwind-fallback .flex-row,
+        body.tailwind-fallback .items-center,
+        body.tailwind-fallback .justify-between,
+        body.tailwind-fallback .justify-end,
+        body.tailwind-fallback .space-x-2,
+        body.tailwind-fallback .space-x-3,
+        body.tailwind-fallback .space-x-1 {
+            display: flex;
+        }
+
+        body.tailwind-fallback .items-center,
+        body.tailwind-fallback .justify-between,
+        body.tailwind-fallback .justify-end {
+            align-items: center;
+        }
+
+        body.tailwind-fallback .justify-between {
+            justify-content: space-between;
+        }
+
+        body.tailwind-fallback .space-x-2 > * + *,
+        body.tailwind-fallback .space-x-3 > * + *,
+        body.tailwind-fallback .space-x-1 > * + * {
+            margin-left: 0.5rem;
+        }
+
+        body.tailwind-fallback .hidden {
+            display: none !important;
+        }
+
+        @media (min-width: 1024px) {
+            body.tailwind-fallback main {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body.tailwind-fallback header > div {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+
+            body.tailwind-fallback #command-categories {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            body.tailwind-fallback .max-w-7xl {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
         }
 
         /* Syntax Highlighting */
@@ -65,13 +299,13 @@
             </div>
 
             <div class="flex items-center space-x-2">
-                <button onclick="app.toggleBatchDrawer()" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-900/50 transition flex items-center space-x-2">
+                <button onclick="app.toggleBatchDrawer()" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-900/50 transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-layer-group text-emerald-400"></i>
                     <span class="hidden md:inline">Lote de Comandos</span>
                     <span id="batch-count-badge" class="bg-emerald-500 text-slate-950 font-bold px-1.5 py-0.2 rounded-full text-[10px]">0</span>
                 </button>
 
-                <button onclick="app.openSavedModal()" class="px-3 py-2 text-xs font-medium rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 transition flex items-center space-x-2 text-slate-300">
+                <button onclick="app.openSavedModal()" class="px-3 py-2 text-xs font-medium rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-bookmark text-amber-400"></i>
                     <span class="hidden sm:inline">Favoritos</span>
                     <span id="fav-badge" class="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
@@ -93,21 +327,18 @@
                     </label>
                     
                     <div class="relative w-full sm:w-56">
-                        <input type="text" id="cmd-search-input" oninput="app.filterCategories(this.value)" placeholder="Buscar por comando o función..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500/60 pl-8">
+                        <input type="text" id="cmd-search-input" oninput="app.filterCategories(this.value)" placeholder="Buscar por comando o función..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition">
                         <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-xs text-slate-500"></i>
                     </div>
                 </div>
 
-                <!-- Expanded Grid of Command Icons -->
                 <div id="command-categories" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 max-h-64 overflow-y-auto custom-scrollbar pr-1">
                     <!-- Populated dynamically via JavaScript -->
                 </div>
             </div>
 
-            <!-- Dynamic Parameter Form Panel -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-md flex-1 flex flex-col justify-between relative overflow-hidden">
                 <div>
-                    <!-- Form Header -->
                     <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800/80">
                         <div class="flex items-center space-x-3">
                             <span id="active-icon" class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-lg">
@@ -123,7 +354,6 @@
                         </span>
                     </div>
 
-                    <!-- Coordinates Assistant Modal Trigger -->
                     <div class="mb-4 bg-slate-950/60 border border-slate-800/60 rounded-xl p-3 flex items-center justify-between">
                         <div class="flex items-center space-x-2">
                             <i class="fa-solid fa-compass text-amber-400 text-xs"></i>
@@ -134,13 +364,11 @@
                         </button>
                     </div>
 
-                    <!-- Dynamic Input Fields Form -->
                     <form id="command-form" onsubmit="event.preventDefault();" class="space-y-4">
                         <!-- Populated dynamically -->
                     </form>
                 </div>
 
-                <!-- Form Action Footer -->
                 <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
                     <button type="button" onclick="app.resetForm()" class="px-3.5 py-2 text-xs font-medium text-slate-400 hover:text-white transition flex items-center space-x-1.5">
                         <i class="fa-solid fa-arrow-rotate-left"></i>
@@ -152,7 +380,7 @@
                             <i class="fa-solid fa-plus text-emerald-400"></i>
                             <span>Agregar al Lote</span>
                         </button>
-                        <button type="button" onclick="app.generateAndCopy()" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs rounded-xl shadow-lg shadow-emerald-950/50 transition flex items-center space-x-2 border border-emerald-400/30 glow-emerald">
+                        <button type="button" onclick="app.generateAndCopy()" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center space-x-1.5">
                             <i class="fa-solid fa-bolt"></i>
                             <span>Generar y Copiar</span>
                         </button>
@@ -164,7 +392,6 @@
 
         <section class="lg:col-span-5 flex flex-col space-y-6">
             
-            <!-- Output Code Box -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-md relative overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
@@ -183,7 +410,6 @@
                         </div>
                     </div>
 
-                    <!-- Highlighting Box -->
                     <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800/90 shadow-inner min-h-[70px] flex items-center justify-between">
                         <div id="output-code-highlighted" class="font-mono text-xs sm:text-sm text-slate-200 break-all leading-relaxed select-all">
                             <!-- Syntax highlighted code inserted here -->
@@ -202,14 +428,13 @@
                         <span>¡Copiado para la Consola!</span>
                     </span>
 
-                    <button onclick="app.copyOutput()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center space-x-1.5 active:scale-95">
+                    <button onclick="app.copyOutput()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center space-x-1.5">
                         <i class="fa-regular fa-copy"></i>
                         <span>Copiar Comando</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Quick Presets -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 shadow-xl backdrop-blur-md">
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center space-x-1.5">
                     <i class="fa-solid fa-bolt text-amber-400"></i>
@@ -220,7 +445,6 @@
                 </div>
             </div>
 
-            <!-- History Section -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 shadow-xl backdrop-blur-md flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center space-x-1.5">
@@ -918,10 +1142,8 @@
             updateOutput() {
                 const cfg = COMMAND_CONFIGS[this.activeCommand];
                 const rawCmd = cfg.builder(this.formValues);
-                
                 const highlighted = this.highlightSyntax(rawCmd);
                 document.getElementById('output-code-highlighted').innerHTML = highlighted;
-
                 this.validateCommand(rawCmd);
                 this.checkFavoriteStatus(rawCmd);
             }
@@ -994,260 +1216,237 @@
             }
 
             copyToClipboard(text) {
-                const textArea = document.createElement("textarea");
+                const textArea = document.createElement('textarea');
                 textArea.value = text;
-                textArea.style.position = "fixed";
+                textArea.style.position = 'fixed';
                 document.body.appendChild(textArea);
-                textArea.focus();
                 textArea.select();
-                try {
-                    document.execCommand('copy');
-                } catch (err) {
-                    if (navigator.clipboard) navigator.clipboard.writeText(text);
-                }
+                document.execCommand('copy');
                 document.body.removeChild(textArea);
             }
 
             showCopyFeedback() {
-                const fb = document.getElementById('copy-feedback');
-                fb.classList.remove('opacity-0');
-                setTimeout(() => fb.classList.add('opacity-0'), 2500);
-            }
-
-            renderQuickPresets() {
-                const container = document.getElementById('quick-presets');
-                container.innerHTML = '';
-                
-                QUICK_PRESETS.forEach(p => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'p-2.5 bg-slate-950/60 hover:bg-slate-800 border border-slate-800/80 rounded-xl text-left transition flex items-center justify-between group';
-                    btn.onclick = () => {
-                        this.copyToClipboard(p.cmd);
-                        this.addToHistory(p.cmd);
-                        this.showCopyFeedback();
-                    };
-                    btn.innerHTML = `
-                        <div class="truncate mr-2">
-                            <p class="text-xs font-semibold text-slate-200 group-hover:text-emerald-400 transition truncate">${p.label}</p>
-                            <p class="text-[10px] font-mono text-slate-500 truncate">${p.cmd}</p>
-                        </div>
-                        <i class="fa-regular fa-copy text-slate-500 group-hover:text-emerald-400 shrink-0 text-xs"></i>
-                    `;
-                    container.appendChild(btn);
-                });
-            }
-
-            setupCoordCalculator() {
-                const inputs = ['coord-x', 'coord-y', 'coord-z'];
-                inputs.forEach(id => {
-                    document.getElementById(id).oninput = () => {
-                        const x = document.getElementById('coord-x').value || '~';
-                        const y = document.getElementById('coord-y').value || '~';
-                        const z = document.getElementById('coord-z').value || '~';
-                        document.getElementById('coord-result-preview').innerText = `${x} ${y} ${z}`;
-                    };
-                });
-            }
-
-            openCoordModal() {
-                document.getElementById('coord-modal').classList.remove('hidden');
-                document.getElementById('coord-modal').classList.add('flex');
-            }
-
-            closeCoordModal() {
-                document.getElementById('coord-modal').classList.remove('flex');
-                document.getElementById('coord-modal').classList.add('hidden');
-            }
-
-            applyCoordsToActiveField() {
-                const res = document.getElementById('coord-result-preview').innerText;
-                if (this.activeFieldForCoords && this.formValues[this.activeFieldForCoords] !== undefined) {
-                    this.formValues[this.activeFieldForCoords] = res;
-                    this.renderForm();
-                    this.updateOutput();
-                }
-                this.closeCoordModal();
-            }
-
-            addToBatch() {
-                const cmd = this.getRawCommand();
-                this.batchList.push(cmd);
-                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
-                this.updateBatchBadge();
-                this.showCopyFeedback();
-            }
-
-            toggleBatchDrawer() {
-                const modal = document.getElementById('batch-modal');
-                if (modal.classList.contains('hidden')) {
-                    modal.classList.remove('hidden');
-                    modal.classList.add('flex');
-                    this.renderBatchList();
-                } else {
-                    modal.classList.remove('flex');
-                    modal.classList.add('hidden');
-                }
-            }
-
-            renderBatchList() {
-                const container = document.getElementById('batch-list');
-                if (this.batchList.length === 0) {
-                    container.innerHTML = `<p class="text-center py-8 text-xs text-slate-500">No hay comandos guardados en la secuencia.</p>`;
-                    return;
-                }
-
-                container.innerHTML = '';
-                this.batchList.forEach((cmd, idx) => {
-                    const row = document.createElement('div');
-                    row.className = 'bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between space-x-2';
-                    row.innerHTML = `
-                        <span class="text-xs font-mono text-slate-400 w-6">#${idx + 1}</span>
-                        <code class="font-mono text-xs text-emerald-300 flex-1 truncate">${cmd}</code>
-                        <button onclick="app.removeFromBatch(${idx})" class="p-1.5 text-rose-400 hover:bg-rose-950/30 rounded-lg">
-                            <i class="fa-solid fa-xmark text-xs"></i>
-                        </button>
-                    `;
-                    container.appendChild(row);
-                });
-            }
-
-            removeFromBatch(index) {
-                this.batchList.splice(index, 1);
-                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
-                this.updateBatchBadge();
-                this.renderBatchList();
-            }
-
-            clearBatch() {
-                this.batchList = [];
-                localStorage.removeItem('mc_cmd_batch_pro');
-                this.updateBatchBadge();
-                this.renderBatchList();
-            }
-
-            copyBatch() {
-                const fullScript = this.batchList.join('\n');
-                this.copyToClipboard(fullScript);
-                this.toggleBatchDrawer();
-                this.showCopyFeedback();
-            }
-
-            updateBatchBadge() {
-                document.getElementById('batch-count-badge').innerText = this.batchList.length;
+                const el = document.getElementById('copy-feedback');
+                el.classList.remove('opacity-0');
+                setTimeout(() => el.classList.add('opacity-0'), 1500);
             }
 
             addToHistory(cmd) {
-                if (this.history.length > 0 && this.history[0] === cmd) return;
-                this.history.unshift(cmd);
-                if (this.history.length > 30) this.history.pop();
-                localStorage.setItem('mc_cmd_history_pro', JSON.stringify(this.history));
-                this.renderHistory();
+                if (!this.history.includes(cmd)) {
+                    this.history.unshift(cmd);
+                    this.history = this.history.slice(0, 10);
+                    localStorage.setItem('mc_cmd_history_pro', JSON.stringify(this.history));
+                    this.renderHistory();
+                }
+            }
+
+            renderHistory() {
+                const el = document.getElementById('history-list');
+                document.getElementById('history-count').textContent = `${this.history.length} comandos`;
+                if (!this.history.length) {
+                    el.innerHTML = '<div class="text-xs text-slate-500 italic">No hay historial reciente.</div>';
+                    return;
+                }
+
+                el.innerHTML = this.history.map((cmd, index) => `
+                    <button type="button" class="w-full text-left bg-slate-950/50 border border-slate-800 hover:border-emerald-700 hover:bg-emerald-950/20 rounded-xl px-3 py-2 transition" onclick="app.useHistoryCommand('${cmd.replace(/'/g, '\\'')}')">
+                        <span class="font-mono text-[11px] text-emerald-300 break-all">${cmd}</span>
+                    </button>
+                `).join('');
+            }
+
+            useHistoryCommand(cmd) {
+                const ba = cmd.replace(/\\'/g, "'");
+                const command = ba.trim();
+                const isCommand = Object.keys(COMMAND_CONFIGS).find(key => command.startsWith(`/${key}`));
+                if (isCommand) {
+                    this.activeCommand = isCommand;
+                    this.renderCategories();
+                    this.renderForm();
+                }
+                this.copyToClipboard(command);
             }
 
             clearHistory() {
                 this.history = [];
-                localStorage.removeItem('mc_cmd_history_pro');
+                localStorage.setItem('mc_cmd_history_pro', JSON.stringify([]));
                 this.renderHistory();
             }
 
-            renderHistory() {
-                const list = document.getElementById('history-list');
-                document.getElementById('history-count').innerText = `${this.history.length} ítems`;
-
-                if (this.history.length === 0) {
-                    list.innerHTML = `<div class="text-center py-8 text-xs text-slate-600">No hay historial reciente.</div>`;
-                    return;
-                }
-
-                list.innerHTML = '';
-                this.history.forEach((cmd) => {
-                    const item = document.createElement('div');
-                    item.className = 'bg-slate-950/60 border border-slate-800/60 rounded-xl p-2.5 flex items-center justify-between space-x-2 hover:border-slate-700 transition';
-                    item.innerHTML = `
-                        <code class="font-mono text-xs text-slate-300 truncate flex-1 select-all">${cmd}</code>
-                        <div class="flex items-center space-x-1 shrink-0">
-                            <button onclick="app.copySpecific('${encodeURIComponent(cmd)}')" class="p-1.5 text-slate-400 hover:text-emerald-400 rounded-lg">
-                                <i class="fa-regular fa-copy text-xs"></i>
-                            </button>
-                            <button onclick="app.toggleFavoriteItem('${encodeURIComponent(cmd)}')" class="p-1.5 text-slate-400 hover:text-amber-400 rounded-lg">
-                                <i class="${this.favorites.includes(cmd) ? 'fa-solid fa-star text-amber-400' : 'fa-regular fa-star'} text-xs"></i>
-                            </button>
-                        </div>
-                    `;
-                    list.appendChild(item);
-                });
+            renderQuickPresets() {
+                const el = document.getElementById('quick-presets');
+                el.innerHTML = QUICK_PRESETS.map(item => `
+                    <button type="button" class="bg-slate-950/50 border border-slate-800 hover:border-emerald-700 hover:bg-emerald-950/20 rounded-xl px-3 py-2 text-left transition" onclick="app.copyToClipboard('${item.cmd}')">
+                        <span class="text-[11px] text-slate-300 block">${item.label}</span>
+                    </button>
+                `).join('');
             }
 
-            copySpecific(encodedCmd) {
-                const cmd = decodeURIComponent(encodedCmd);
-                this.copyToClipboard(cmd);
-                this.showCopyFeedback();
+            openCoordModal() {
+                const modal = document.getElementById('coord-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                this.setupCoordCalculator();
+            }
+
+            closeCoordModal() {
+                const modal = document.getElementById('coord-modal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            openSavedModal() {
+                this.renderFavorites();
+                const modal = document.getElementById('favorites-modal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            closeSavedModal() {
+                const modal = document.getElementById('favorites-modal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            toggleBatchDrawer() {
+                const modal = document.getElementById('batch-modal');
+                modal.classList.toggle('hidden');
+                modal.classList.toggle('flex');
+                if (!modal.classList.contains('hidden')) this.renderBatch();
+            }
+
+            renderBatch() {
+                const el = document.getElementById('batch-list');
+                if (!this.batchList.length) {
+                    el.innerHTML = '<div class="text-xs text-slate-500 italic">Tu lote está vacío.</div>';
+                    return;
+                }
+                el.innerHTML = this.batchList.map((cmd, index) => `
+                    <div class="flex items-center justify-between gap-2 bg-slate-950/50 border border-slate-800 rounded-xl px-3 py-2">
+                        <span class="font-mono text-[11px] text-slate-200 break-all">${cmd}</span>
+                        <button type="button" class="text-rose-400 hover:text-rose-300" onclick="app.removeBatchItem(${index})"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                `).join('');
+            }
+
+            addToBatch() {
+                const cmd = this.getRawCommand();
+                this.batchList.unshift(cmd);
+                this.batchList = [...new Set(this.batchList)];
+                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
+                this.updateBatchBadge();
+                this.renderBatch();
+            }
+
+            removeBatchItem(index) {
+                this.batchList.splice(index, 1);
+                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
+                this.updateBatchBadge();
+                this.renderBatch();
+            }
+
+            clearBatch() {
+                this.batchList = [];
+                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
+                this.updateBatchBadge();
+                this.renderBatch();
+            }
+
+            updateBatchBadge() {
+                document.getElementById('batch-count-badge').textContent = this.batchList.length;
+            }
+
+            copyBatch() {
+                if (!this.batchList.length) return;
+                this.copyToClipboard(this.batchList.join('\n'));
             }
 
             toggleFavoriteCurrent() {
                 const cmd = this.getRawCommand();
-                this.toggleFavoriteItem(encodeURIComponent(cmd));
-            }
-
-            toggleFavoriteItem(encodedCmd) {
-                const cmd = decodeURIComponent(encodedCmd);
-                const idx = this.favorites.indexOf(cmd);
-                if (idx > -1) this.favorites.splice(idx, 1);
-                else this.favorites.push(cmd);
-
+                if (this.favorites.includes(cmd)) {
+                    this.favorites = this.favorites.filter(item => item !== cmd);
+                } else {
+                    this.favorites.unshift(cmd);
+                }
                 localStorage.setItem('mc_cmd_favs_pro', JSON.stringify(this.favorites));
+                this.checkFavoriteStatus(cmd);
                 this.updateFavBadge();
-                this.renderHistory();
-                this.checkFavoriteStatus(this.getRawCommand());
+                this.renderFavorites();
             }
 
             checkFavoriteStatus(cmd) {
                 const btn = document.getElementById('fav-btn');
-                if (this.favorites.includes(cmd)) {
-                    btn.innerHTML = `<i class="fa-solid fa-star text-amber-400"></i>`;
-                } else {
-                    btn.innerHTML = `<i class="fa-regular fa-star"></i>`;
-                }
+                const active = this.favorites.includes(cmd);
+                btn.innerHTML = active ? '<i class="fa-solid fa-star text-amber-400"></i>' : '<i class="fa-regular fa-star"></i>';
             }
 
             updateFavBadge() {
-                document.getElementById('fav-badge').innerText = this.favorites.length;
+                document.getElementById('fav-badge').textContent = this.favorites.length;
             }
 
-            openSavedModal() {
-                const modal = document.getElementById('favorites-modal');
+            renderFavorites() {
                 const list = document.getElementById('favorites-list');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-
-                if (this.favorites.length === 0) {
-                    list.innerHTML = `<div class="text-center py-8 text-xs text-slate-500">No hay comandos en favoritos.</div>`;
+                if (!this.favorites.length) {
+                    list.innerHTML = '<div class="text-xs text-slate-500 italic">No tienes comandos favoritos todavía.</div>';
                     return;
                 }
 
-                list.innerHTML = '';
-                this.favorites.forEach((cmd) => {
-                    const row = document.createElement('div');
-                    row.className = 'bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between space-x-2';
-                    row.innerHTML = `
-                        <code class="font-mono text-xs text-amber-200/90 truncate flex-1 select-all">${cmd}</code>
-                        <button onclick="app.copySpecific('${encodeURIComponent(cmd)}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg">Copiar</button>
-                    `;
-                    list.appendChild(row);
-                });
+                list.innerHTML = this.favorites.map((cmd, index) => `
+                    <div class="flex items-center justify-between gap-3 bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+                        <span class="font-mono text-[11px] text-slate-200 break-all">${cmd}</span>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" class="text-emerald-400 hover:text-emerald-300" onclick="app.copyToClipboard('${cmd.replace(/'/g, '\\'')}')"><i class="fa-regular fa-copy"></i></button>
+                            <button type="button" class="text-rose-400 hover:text-rose-300" onclick="app.removeFavorite(${index})"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `).join('');
             }
 
-            closeSavedModal() {
-                document.getElementById('favorites-modal').classList.remove('flex');
-                document.getElementById('favorites-modal').classList.add('hidden');
+            removeFavorite(index) {
+                this.favorites.splice(index, 1);
+                localStorage.setItem('mc_cmd_favs_pro', JSON.stringify(this.favorites));
+                this.updateFavBadge();
+                this.renderFavorites();
+                this.checkFavoriteStatus(this.getRawCommand());
+            }
+
+            setupCoordCalculator() {
+                const x = document.getElementById('coord-x');
+                const y = document.getElementById('coord-y');
+                const z = document.getElementById('coord-z');
+                const preview = document.getElementById('coord-result-preview');
+                if (!x || !y || !z || !preview) return;
+
+                const update = () => {
+                    const coords = [x.value || '~', y.value || '~1', z.value || '~'];
+                    preview.textContent = coords.join(' ');
+                };
+
+                x.addEventListener('input', update);
+                y.addEventListener('input', update);
+                z.addEventListener('input', update);
+            }
+
+            applyCoordsToActiveField() {
+                const preview = document.getElementById('coord-result-preview').textContent;
+                if (!this.activeFieldForCoords) return;
+                const field = document.querySelector('#command-form input, #command-form select');
+                if (!field) return;
+                const activeTarget = this.activeFieldForCoords;
+                const config = COMMAND_CONFIGS[this.activeCommand];
+                const matchField = config.fields.find(f => f.id === activeTarget);
+                if (!matchField) return;
+
+                const f = config.fields.find(item => item.id === activeTarget);
+                this.formValues[f.id] = preview;
+                this.updateOutput();
+                this.renderForm();
+                this.closeCoordModal();
             }
         }
 
-        let app;
-        window.onload = function() {
-            app = new BedrockCommandStudio();
-        };
+        const app = new BedrockCommandStudio();
+        window.app = app;
     </script>
 </body>
 </html>
