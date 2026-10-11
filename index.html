@@ -4,53 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Comandos Minecraft Bedrock Ultimate</title>
-    <script src="https://cdn.tailwindcss.com" defer></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!window.tailwind) {
-                document.documentElement.classList.add('tailwind-fallback');
-                document.body.classList.add('tailwind-fallback');
-            }
-        });
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            color-scheme: dark;
-            --bg: #020817;
-            --panel: rgba(15, 23, 42, 0.82);
-            --panel-strong: #0f172a;
-            --panel-soft: #111827;
-            --border: rgba(51, 65, 85, 0.9);
-            --text: #e2e8f0;
-            --muted: #94a3b8;
-            --accent: #10b981;
-            --accent-2: #2dd4bf;
-            --warning: #fbbf24;
-            --danger: #ef4444;
-        }
-
-        html, body {
-            margin: 0;
-            min-height: 100%;
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        body {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            line-height: 1.5;
-        }
-
-        code, pre, .font-mono {
-            font-family: 'JetBrains Mono', 'SFMono-Regular', monospace;
-        }
-
-        .pixel-font {
-            font-family: 'Press Start 2P', monospace;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .pixel-font { font-family: 'Press Start 2P', monospace; }
 
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
@@ -66,201 +27,6 @@
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: rgba(16, 185, 129, 0.8);
-        }
-
-        /* Fallback when Tailwind CDN does not load */
-        body.tailwind-fallback,
-        html.tailwind-fallback {
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        body.tailwind-fallback * {
-            box-sizing: border-box;
-        }
-
-        body.tailwind-fallback header {
-            background: rgba(2, 8, 23, 0.9);
-            border-bottom: 1px solid rgba(51, 65, 85, 0.8);
-            backdrop-filter: blur(18px);
-            position: sticky;
-            top: 0;
-            z-index: 40;
-        }
-
-        body.tailwind-fallback .max-w-7xl {
-            max-width: 1280px;
-            width: 100%;
-            margin: 0 auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-
-        body.tailwind-fallback header > div {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 64px;
-            gap: 1rem;
-        }
-
-        body.tailwind-fallback main {
-            max-width: 1280px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 1.5rem 1rem 2rem;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        body.tailwind-fallback section {
-            background: rgba(15, 23, 42, 0.82);
-            border: 1px solid rgba(51, 65, 85, 0.9);
-            border-radius: 1rem;
-            padding: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(2, 6, 23, 0.35);
-        }
-
-        body.tailwind-fallback #command-categories {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.5rem;
-            max-height: 260px;
-            overflow-y: auto;
-        }
-
-        body.tailwind-fallback #command-categories button,
-        body.tailwind-fallback button,
-        body.tailwind-fallback input,
-        body.tailwind-fallback select {
-            font: inherit;
-        }
-
-        body.tailwind-fallback #command-categories button {
-            background: rgba(15, 23, 42, 0.7);
-            color: var(--text);
-            border: 1px solid rgba(51, 65, 85, 0.9);
-            border-radius: 0.75rem;
-            padding: 0.5rem 0.4rem;
-            min-height: 70px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.35rem;
-            cursor: pointer;
-        }
-
-        body.tailwind-fallback #command-categories button.active,
-        body.tailwind-fallback #command-categories button:hover {
-            background: rgba(16, 185, 129, 0.18);
-            border-color: rgba(16, 185, 129, 0.65);
-            color: #a7f3d0;
-        }
-
-        body.tailwind-fallback input,
-        body.tailwind-fallback select,
-        body.tailwind-fallback textarea {
-            width: 100%;
-            background: #020817;
-            border: 1px solid rgba(51, 65, 85, 0.9);
-            border-radius: 0.75rem;
-            color: var(--text);
-            padding: 0.7rem 0.75rem;
-            font-size: 0.8rem;
-        }
-
-        body.tailwind-fallback .bg-slate-950,
-        body.tailwind-fallback [id="output-code-highlighted"],
-        body.tailwind-fallback .bg-slate-900,
-        body.tailwind-fallback .bg-slate-950\/60 {
-            background: #020817;
-        }
-
-        body.tailwind-fallback .text-slate-400,
-        body.tailwind-fallback .text-slate-500,
-        body.tailwind-fallback .text-slate-300 {
-            color: var(--muted);
-        }
-
-        body.tailwind-fallback .text-emerald-400,
-        body.tailwind-fallback .text-emerald-300 {
-            color: #6ee7b7;
-        }
-
-        body.tailwind-fallback .rounded-2xl,
-        body.tailwind-fallback .rounded-xl,
-        body.tailwind-fallback .rounded-lg {
-            border-radius: 0.9rem;
-        }
-
-        body.tailwind-fallback .shadow-xl,
-        body.tailwind-fallback .shadow-2xl {
-            box-shadow: 0 18px 30px -10px rgba(2, 6, 23, 0.35);
-        }
-
-        body.tailwind-fallback .space-y-2 > * + *,
-        body.tailwind-fallback .space-y-4 > * + *,
-        body.tailwind-fallback .space-y-6 > * + *,
-        body.tailwind-fallback .flex-col > * + * {
-            margin-top: 0.5rem;
-        }
-
-        body.tailwind-fallback .flex,
-        body.tailwind-fallback .flex-row,
-        body.tailwind-fallback .items-center,
-        body.tailwind-fallback .justify-between,
-        body.tailwind-fallback .justify-end,
-        body.tailwind-fallback .space-x-2,
-        body.tailwind-fallback .space-x-3,
-        body.tailwind-fallback .space-x-1 {
-            display: flex;
-        }
-
-        body.tailwind-fallback .items-center,
-        body.tailwind-fallback .justify-between,
-        body.tailwind-fallback .justify-end {
-            align-items: center;
-        }
-
-        body.tailwind-fallback .justify-between {
-            justify-content: space-between;
-        }
-
-        body.tailwind-fallback .space-x-2 > * + *,
-        body.tailwind-fallback .space-x-3 > * + *,
-        body.tailwind-fallback .space-x-1 > * + * {
-            margin-left: 0.5rem;
-        }
-
-        body.tailwind-fallback .hidden {
-            display: none !important;
-        }
-
-        @media (min-width: 1024px) {
-            body.tailwind-fallback main {
-                grid-template-columns: 1.2fr 0.8fr;
-            }
-        }
-
-        @media (max-width: 640px) {
-            body.tailwind-fallback header > div {
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: center;
-                padding-top: 0.75rem;
-                padding-bottom: 0.75rem;
-            }
-
-            body.tailwind-fallback #command-categories {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            body.tailwind-fallback .max-w-7xl {
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-            }
         }
 
         /* Syntax Highlighting */
@@ -299,13 +65,13 @@
             </div>
 
             <div class="flex items-center space-x-2">
-                <button onclick="app.toggleBatchDrawer()" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-900/50 transition flex items-center space-x-1.5">
+                <button onclick="app.toggleBatchDrawer()" class="px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-900/50 transition flex items-center space-x-2">
                     <i class="fa-solid fa-layer-group text-emerald-400"></i>
                     <span class="hidden md:inline">Lote de Comandos</span>
                     <span id="batch-count-badge" class="bg-emerald-500 text-slate-950 font-bold px-1.5 py-0.2 rounded-full text-[10px]">0</span>
                 </button>
 
-                <button onclick="app.openSavedModal()" class="px-3 py-2 text-xs font-medium rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 transition flex items-center space-x-1.5">
+                <button onclick="app.openSavedModal()" class="px-3 py-2 text-xs font-medium rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 transition flex items-center space-x-2 text-slate-300">
                     <i class="fa-solid fa-bookmark text-amber-400"></i>
                     <span class="hidden sm:inline">Favoritos</span>
                     <span id="fav-badge" class="bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full text-[10px]">0</span>
@@ -327,18 +93,21 @@
                     </label>
                     
                     <div class="relative w-full sm:w-56">
-                        <input type="text" id="cmd-search-input" oninput="app.filterCategories(this.value)" placeholder="Buscar por comando o función..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition">
+                        <input type="text" id="cmd-search-input" oninput="app.filterCategories(this.value)" placeholder="Buscar por comando o función..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500/60 pl-8">
                         <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-xs text-slate-500"></i>
                     </div>
                 </div>
 
+                <!-- Expanded Grid of Command Icons -->
                 <div id="command-categories" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 max-h-64 overflow-y-auto custom-scrollbar pr-1">
                     <!-- Populated dynamically via JavaScript -->
                 </div>
             </div>
 
+            <!-- Dynamic Parameter Form Panel -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-md flex-1 flex flex-col justify-between relative overflow-hidden">
                 <div>
+                    <!-- Form Header -->
                     <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800/80">
                         <div class="flex items-center space-x-3">
                             <span id="active-icon" class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-lg">
@@ -354,6 +123,7 @@
                         </span>
                     </div>
 
+                    <!-- Coordinates Assistant Modal Trigger -->
                     <div class="mb-4 bg-slate-950/60 border border-slate-800/60 rounded-xl p-3 flex items-center justify-between">
                         <div class="flex items-center space-x-2">
                             <i class="fa-solid fa-compass text-amber-400 text-xs"></i>
@@ -364,11 +134,13 @@
                         </button>
                     </div>
 
+                    <!-- Dynamic Input Fields Form -->
                     <form id="command-form" onsubmit="event.preventDefault();" class="space-y-4">
                         <!-- Populated dynamically -->
                     </form>
                 </div>
 
+                <!-- Form Action Footer -->
                 <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
                     <button type="button" onclick="app.resetForm()" class="px-3.5 py-2 text-xs font-medium text-slate-400 hover:text-white transition flex items-center space-x-1.5">
                         <i class="fa-solid fa-arrow-rotate-left"></i>
@@ -380,7 +152,7 @@
                             <i class="fa-solid fa-plus text-emerald-400"></i>
                             <span>Agregar al Lote</span>
                         </button>
-                        <button type="button" onclick="app.generateAndCopy()" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center space-x-1.5">
+                        <button type="button" onclick="app.generateAndCopy()" class="px-5 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs rounded-xl shadow-lg shadow-emerald-950/50 transition flex items-center space-x-2 border border-emerald-400/30 glow-emerald">
                             <i class="fa-solid fa-bolt"></i>
                             <span>Generar y Copiar</span>
                         </button>
@@ -392,6 +164,7 @@
 
         <section class="lg:col-span-5 flex flex-col space-y-6">
             
+            <!-- Output Code Box -->
             <div class="bg-slate-900/90 border border-slate-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-md relative overflow-hidden flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-3">
@@ -410,6 +183,7 @@
                         </div>
                     </div>
 
+                    <!-- Highlighting Box -->
                     <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800/90 shadow-inner min-h-[70px] flex items-center justify-between">
                         <div id="output-code-highlighted" class="font-mono text-xs sm:text-sm text-slate-200 break-all leading-relaxed select-all">
                             <!-- Syntax highlighted code inserted here -->
@@ -428,13 +202,14 @@
                         <span>¡Copiado para la Consola!</span>
                     </span>
 
-                    <button onclick="app.copyOutput()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center space-x-1.5">
+                    <button onclick="app.copyOutput()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl shadow transition flex items-center space-x-1.5 active:scale-95">
                         <i class="fa-regular fa-copy"></i>
                         <span>Copiar Comando</span>
                     </button>
                 </div>
             </div>
 
+            <!-- Quick Presets -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 shadow-xl backdrop-blur-md">
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center space-x-1.5">
                     <i class="fa-solid fa-bolt text-amber-400"></i>
@@ -445,6 +220,7 @@
                 </div>
             </div>
 
+            <!-- History Section -->
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 shadow-xl backdrop-blur-md flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center space-x-1.5">
@@ -546,907 +322,4 @@
 
     <div id="favorites-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full max-h-[80vh] flex flex-col shadow-2xl overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
-                <h3 class="font-bold text-slate-200 flex items-center space-x-2">
-                    <i class="fa-solid fa-bookmark text-amber-400"></i>
-                    <span>Comandos Favoritos</span>
-                </h3>
-                <button onclick="app.closeSavedModal()" class="text-slate-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            <div id="favorites-list" class="p-6 overflow-y-auto space-y-3 custom-scrollbar flex-1"></div>
-            <div class="px-6 py-3 border-t border-slate-800 bg-slate-950/30 text-right">
-                <button onclick="app.closeSavedModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl text-slate-300 transition">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Item & Data Autocompletion Lists for Bedrock 1.20+
-        const BEDROCK_ITEMS = [
-            'diamond', 'diamond_sword', 'diamond_pickaxe', 'netherite_sword', 'netherite_chestplate',
-            'netherite_ingot', 'command_block', 'chain_command_block', 'repeating_command_block',
-            'barrier', 'structure_block', 'allow', 'deny', 'border_block', 'enchanted_golden_apple',
-            'golden_apple', 'ender_chest', 'elytra', 'firework_rocket', 'totem_of_undying', 'experience_bottle',
-            'trident', 'bow', 'arrow', 'tnt', 'redstone', 'repeater', 'comparator', 'dirt', 'stone', 'grass',
-            'oak_log', 'obsidian', 'bedrock', 'beacon', 'sponge', 'sea_lantern', 'shulker_box'
-        ];
-
-        const BEDROCK_ENTITIES = [
-            'zombie', 'skeleton', 'creeper', 'spider', 'ender_dragon', 'wither', 'warden',
-            'iron_golem', 'villager', 'player', 'pig', 'cow', 'sheep', 'wolf', 'cat', 'item',
-            'tnt', 'arrow', 'lightning_bolt', 'armor_stand', 'npc'
-        ];
-
-        const BEDROCK_EFFECTS = [
-            'speed', 'slowness', 'haste', 'mining_fatigue', 'strength', 'instant_health', 'instant_damage',
-            'jump_boost', 'nausea', 'regeneration', 'resistance', 'fire_resistance', 'water_breathing',
-            'invisibility', 'blindness', 'night_vision', 'hunger', 'weakness', 'poison', 'wither',
-            'health_boost', 'absorption', 'saturation', 'levitation', 'slow_falling', 'conduit_power', 'bad_omen'
-        ];
-
-        const BEDROCK_ENCHANTS = [
-            'sharpness', 'smite', 'bane_of_arthropods', 'knockback', 'fire_aspect', 'looting',
-            'efficiency', 'silk_touch', 'unbreaking', 'fortune', 'power', 'punch', 'flame', 'infinity',
-            'protection', 'fire_protection', 'feather_falling', 'blast_protection', 'projectile_protection',
-            'respiration', 'aqua_affinity', 'mending', 'curse_of_vanishing', 'curse_of_binding', 'channeling',
-            'riptide', 'loyalty', 'impaling', 'multishot', 'piercing', 'quick_charge'
-        ];
-
-        const BEDROCK_STRUCTURES_LOCATIONS = [
-            'ancientcity', 'bastionremnant', 'burriedtreasure', 'city', 'mansion', 'mineshaft', 'monument',
-            'pillagoutpost', 'ruinedportal', 'ruins', 'shipwreck', 'stronghold', 'temple', 'village'
-        ];
-
-        const BEDROCK_GAMERULES = [
-            'commandBlockOutput', 'doDaylightCycle', 'doEntityDrops', 'doFireTick', 'doImmediateRespawn',
-            'doMobLoot', 'doMobSpawning', 'doTileDrops', 'doWeatherCycle', 'drowningDamage', 'fallDamage',
-            'fireDamage', 'freezeDamage', 'keepInventory', 'mobGriefing', 'naturalRegeneration', 'pvp',
-            'sendCommandFeedback', 'showCoordinates', 'showDeathMessages', 'tntExplodes'
-        ];
-
-        const BEDROCK_SOUNDS = [
-            'ambient.weather.thunder', 'block.bang.wood', 'random.explode', 'random.levelup',
-            'random.orb', 'random.totem', 'mob.enderdragon.growl', 'mob.wither.spawn', 'music.game'
-        ];
-
-        const BEDROCK_FOGS = [
-            'minecraft:fog_nether', 'minecraft:fog_the_end', 'minecraft:fog_water', 'minecraft:fog_bamboo_jungle'
-        ];
-
-        // FULL Bedrock Command Schemas
-        const COMMAND_CONFIGS = {
-            give: {
-                name: 'give',
-                title: 'Dar Objeto (Give)',
-                desc: 'Entrega un objeto o bloque a un jugador',
-                icon: 'fa-box-open',
-                syntax: '/give <jugador> <item> [cantidad] [data]',
-                fields: [
-                    { id: 'target', label: 'Jugador / Selector', type: 'select', options: ['@p', '@a', '@r', '@s', '@e'], default: '@p' },
-                    { id: 'item', label: 'Ítem / Bloque', type: 'autocomplete', list: BEDROCK_ITEMS, default: 'diamond' },
-                    { id: 'amount', label: 'Cantidad', type: 'number', default: '1', min: '1' },
-                    { id: 'data', label: 'Data Value', type: 'number', default: '0' }
-                ],
-                builder: (v) => `/give ${v.target || '@p'} ${v.item || 'diamond'} ${v.amount || 1} ${v.data || 0}`
-            },
-            tp: {
-                name: 'tp',
-                title: 'Teletransporte (TP)',
-                desc: 'Mueve entidades a posiciones o jugadores',
-                icon: 'fa-location-arrow',
-                syntax: '/tp <víctima> <destino>',
-                fields: [
-                    { id: 'target', label: 'Entidad a mover', type: 'text', default: '@s' },
-                    { id: 'destType', label: 'Tipo de Destino', type: 'select', options: ['Coordenadas', 'Jugador'], default: 'Coordenadas' },
-                    { id: 'coords', label: 'Coordenadas X Y Z', type: 'text', default: '~ ~1 ~', conditional: { field: 'destType', value: 'Coordenadas' } },
-                    { id: 'destPlayer', label: 'Jugador Destino', type: 'text', default: '@p', conditional: { field: 'destType', value: 'Jugador' } }
-                ],
-                builder: (v) => v.destType === 'Jugador' ? `/tp ${v.target || '@s'} ${v.destPlayer || '@p'}` : `/tp ${v.target || '@s'} ${v.coords || '~ ~ ~'}`
-            },
-            say: {
-                name: 'say',
-                title: 'Mensaje Global (Say)',
-                desc: 'Envía un mensaje de chat global desde la consola',
-                icon: 'fa-comment',
-                syntax: '/say <mensaje>',
-                fields: [
-                    { id: 'message', label: 'Mensaje de Consola', type: 'text', default: 'Atención jugadores: Reinicio de servidor en 5 minutos' }
-                ],
-                builder: (v) => `/say ${v.message || ''}`
-            },
-            title: {
-                name: 'title',
-                title: 'Título en Pantalla (Title)',
-                desc: 'Muestra títulos o subtítulos gigantes a los jugadores',
-                icon: 'fa-heading',
-                syntax: '/title <jugador> <title|subtitle|actionbar> <texto>',
-                fields: [
-                    { id: 'target', label: 'Jugador', type: 'select', options: ['@a', '@p', '@s', '@r'], default: '@a' },
-                    { id: 'location', label: 'Ubicación', type: 'select', options: ['title', 'subtitle', 'actionbar', 'clear', 'reset'], default: 'title' },
-                    { id: 'text', label: 'Texto a mostrar', type: 'text', default: '§a¡BIENVENIDO AL SERVIDOR!', conditional: { field: 'location', value: 'title' } },
-                    { id: 'subtext', label: 'Texto a mostrar', type: 'text', default: '§7Disfruta tu estadía', conditional: { field: 'location', value: 'subtitle' } },
-                    { id: 'acttext', label: 'Texto a mostrar', type: 'text', default: '§ePuntos: 100', conditional: { field: 'location', value: 'actionbar' } }
-                ],
-                builder: (v) => {
-                    if (v.location === 'clear' || v.location === 'reset') return `/title ${v.target || '@a'} ${v.location}`;
-                    const val = v.text || v.subtext || v.acttext || '';
-                    return `/title ${v.target || '@a'} ${v.location || 'title'} ${val}`;
-                }
-            },
-            clear: {
-                name: 'clear',
-                title: 'Limpiar Inventario (Clear)',
-                desc: 'Borra objetos del inventario de un jugador',
-                icon: 'fa-trash',
-                syntax: '/clear [jugador] [item] [data] [maxCount]',
-                fields: [
-                    { id: 'target', label: 'Jugador', type: 'select', options: ['@p', '@a', '@s', '@r'], default: '@p' },
-                    { id: 'item', label: 'Ítem Específico (Opcional)', type: 'autocomplete', list: BEDROCK_ITEMS, default: '' },
-                    { id: 'data', label: 'Data Value (-1 para todos)', type: 'number', default: '-1' },
-                    { id: 'maxCount', label: 'Cantidad Máxima a borrar', type: 'number', default: '-1' }
-                ],
-                builder: (v) => {
-                    if (!v.item) return `/clear ${v.target || '@p'}`;
-                    return `/clear ${v.target || '@p'} ${v.item} ${v.data || -1} ${v.maxCount || -1}`;
-                }
-            },
-            time: {
-                name: 'time',
-                title: 'Tiempo / Hora (Time)',
-                desc: 'Cambia o consulta el tiempo del mundo',
-                icon: 'fa-sun',
-                syntax: '/time <set|add|query> <valor>',
-                fields: [
-                    { id: 'action', label: 'Acción', type: 'select', options: ['set', 'add', 'query'], default: 'set' },
-                    { id: 'preset', label: 'Hora Predefinida', type: 'select', options: ['day', 'night', 'noon', 'midnight', 'sunrise', 'sunset', 'Personalizado'], default: 'day', conditional: { field: 'action', value: 'set' } },
-                    { id: 'customValue', label: 'Valor Numérico (Ticks)', type: 'number', default: '1000' }
-                ],
-                builder: (v) => {
-                    if (v.action === 'query') return `/time query daytime`;
-                    if (v.action === 'set' && v.preset !== 'Personalizado') return `/time set ${v.preset}`;
-                    return `/time ${v.action} ${v.customValue || 1000}`;
-                }
-            },
-            weather: {
-                name: 'weather',
-                title: 'Clima (Weather)',
-                desc: 'Controla la lluvia, tormenta y despejado',
-                icon: 'fa-cloud-showers-heavy',
-                syntax: '/weather <clear|rain|thunder> [duración]',
-                fields: [
-                    { id: 'type', label: 'Estado del Clima', type: 'select', options: ['clear', 'rain', 'thunder'], default: 'clear' },
-                    { id: 'duration', label: 'Duración (segundos)', type: 'number', default: '300' }
-                ],
-                builder: (v) => `/weather ${v.type || 'clear'} ${v.duration || 300}`
-            },
-            kill: {
-                name: 'kill',
-                title: 'Eliminar / Matar (Kill)',
-                desc: 'Elimina entidades o jugadores del mundo',
-                icon: 'fa-skull',
-                syntax: '/kill [target]',
-                fields: [
-                    { id: 'target', label: 'Objetivo', type: 'select', options: ['@e[type=item]', '@e[type=zombie]', '@a', '@p', '@e'], default: '@e[type=item]' }
-                ],
-                builder: (v) => `/kill ${v.target || '@e[type=item]'}`
-            },
-            enchant: {
-                name: 'enchant',
-                title: 'Encantar (Enchant)',
-                desc: 'Aplica un encantamiento al objeto en mano',
-                icon: 'fa-wand-magic-sparkles',
-                syntax: '/enchant <jugador> <encantamiento> [nivel]',
-                fields: [
-                    { id: 'target', label: 'Jugador', type: 'select', options: ['@p', '@a', '@s'], default: '@p' },
-                    { id: 'enchantment', label: 'Encantamiento Bedrock', type: 'autocomplete', list: BEDROCK_ENCHANTS, default: 'sharpness' },
-                    { id: 'level', label: 'Nivel', type: 'number', default: '5', min: '1', max: '5' }
-                ],
-                builder: (v) => `/enchant ${v.target || '@p'} ${v.enchantment || 'sharpness'} ${v.level || 1}`
-            },
-            locate: {
-                name: 'locate',
-                title: 'Localizar (Locate)',
-                desc: 'Encuentra las coordenadas de estructuras o biomas',
-                icon: 'fa-map-location-dot',
-                syntax: '/locate structure <nombre>',
-                fields: [
-                    { id: 'structure', label: 'Estructura Bedrock', type: 'autocomplete', list: BEDROCK_STRUCTURES_LOCATIONS, default: 'village' }
-                ],
-                builder: (v) => `/locate structure ${v.structure || 'village'}`
-            },
-            music: {
-                name: 'music',
-                title: 'Música de Fondo (Music)',
-                desc: 'Controla las pistas de música de fondo',
-                icon: 'fa-music',
-                syntax: '/music <play|stop|volume> ...',
-                fields: [
-                    { id: 'action', label: 'Acción', type: 'select', options: ['play', 'stop', 'volume'], default: 'play' },
-                    { id: 'track', label: 'Pista de Música', type: 'text', default: 'music.game', conditional: { field: 'action', value: 'play' } },
-                    { id: 'vol', label: 'Volumen (0.0 - 1.0)', type: 'text', default: '1.0' }
-                ],
-                builder: (v) => {
-                    if (v.action === 'stop') return `/music stop`;
-                    if (v.action === 'volume') return `/music volume ${v.vol || '1.0'}`;
-                    return `/music play ${v.track || 'music.game'} ${v.vol || '1.0'}`;
-                }
-            },
-            tag: {
-                name: 'tag',
-                title: 'Etiquetas (Tag)',
-                desc: 'Asigna o remueve etiquetas personalizadas a entidades',
-                icon: 'fa-tag',
-                syntax: '/tag <target> <add|remove|list> <name>',
-                fields: [
-                    { id: 'target', label: 'Objetivo', type: 'text', default: '@p' },
-                    { id: 'action', label: 'Acción', type: 'select', options: ['add', 'remove', 'list'], default: 'add' },
-                    { id: 'tagName', label: 'Nombre de la Etiqueta', type: 'text', default: 'admin', conditional: { field: 'action', value: 'add' } },
-                    { id: 'remTagName', label: 'Nombre de la Etiqueta', type: 'text', default: 'admin', conditional: { field: 'action', value: 'remove' } }
-                ],
-                builder: (v) => {
-                    if (v.action === 'list') return `/tag ${v.target || '@p'} list`;
-                    const t = v.tagName || v.remTagName || 'tag';
-                    return `/tag ${v.target || '@p'} ${v.action} ${t}`;
-                }
-            },
-            ability: {
-                name: 'ability',
-                title: 'Habilidades (Ability)',
-                desc: 'Otorga o revoca habilidades como volar o construir (Mayores permisos)',
-                icon: 'fa-hand-sparkles',
-                syntax: '/ability <player> <ability> <true|false>',
-                fields: [
-                    { id: 'player', label: 'Jugador', type: 'text', default: '@p' },
-                    { id: 'ability', label: 'Habilidad', type: 'select', options: ['mayfly', 'mute', 'worldbuilder'], default: 'mayfly' },
-                    { id: 'value', label: 'Estado', type: 'select', options: ['true', 'false'], default: 'true' }
-                ],
-                builder: (v) => `/ability ${v.player || '@p'} ${v.ability || 'mayfly'} ${v.value || 'true'}`
-            },
-            camerashake: {
-                name: 'camerashake',
-                title: 'Temblor de Cámara',
-                desc: 'Genera un efecto sísmico o de terremoto en la cámara',
-                icon: 'fa-wave-square',
-                syntax: '/camerashake add <player> [intensity] [seconds]',
-                fields: [
-                    { id: 'action', label: 'Acción', type: 'select', options: ['add', 'stop'], default: 'add' },
-                    { id: 'player', label: 'Jugador', type: 'text', default: '@a' },
-                    { id: 'intensity', label: 'Intensidad (0.1 - 4.0)', type: 'text', default: '1.0', conditional: { field: 'action', value: 'add' } },
-                    { id: 'seconds', label: 'Segundos', type: 'number', default: '5', conditional: { field: 'action', value: 'add' } }
-                ],
-                builder: (v) => v.action === 'stop' ? `/camerashake stop ${v.player || '@a'}` : `/camerashake add ${v.player || '@a'} ${v.intensity || '1.0'} ${v.seconds || 5}`
-            },
-            fog: {
-                name: 'fog',
-                title: 'Niebla Ambiental (Fog)',
-                desc: 'Administra la niebla en la pantalla del jugador',
-                icon: 'fa-smog',
-                syntax: '/fog <player> <push|pop|remove> <fogId> <userProvidedId>',
-                fields: [
-                    { id: 'player', label: 'Jugador', type: 'text', default: '@a' },
-                    { id: 'action', label: 'Acción', type: 'select', options: ['push', 'pop'], default: 'push' },
-                    { id: 'fogId', label: 'Niebla Bedrock', type: 'autocomplete', list: BEDROCK_FOGS, default: 'minecraft:fog_nether', conditional: { field: 'action', value: 'push' } },
-                    { id: 'customId', label: 'ID Personalizado', type: 'text', default: 'mi_niebla' }
-                ],
-                builder: (v) => v.action === 'pop' ? `/fog ${v.player || '@a'} pop ${v.customId || 'mi_niebla'}` : `/fog ${v.player || '@a'} push ${v.fogId || 'minecraft:fog_nether'} ${v.customId || 'mi_niebla'}`
-            },
-            kick: {
-                name: 'kick',
-                title: 'Expulsar Jugador (Kick)',
-                desc: 'Expulsa a un jugador del servidor con un motivo',
-                icon: 'fa-user-xmark',
-                syntax: '/kick <name> [reason]',
-                fields: [
-                    { id: 'player', label: 'Nombre del Jugador', type: 'text', default: 'Steve' },
-                    { id: 'reason', label: 'Motivo de Expulsión', type: 'text', default: 'Uso de hacks o comportamiento inadecuado' }
-                ],
-                builder: (v) => `/kick "${v.player || 'Steve'}" ${v.reason || 'Expulsado por administrador'}`
-            },
-            execute: {
-                name: 'execute',
-                title: 'Ejecutor Complejo (Execute)',
-                desc: 'Ejecuta comandos en nombre de entidades o desde posiciones (Sintaxis Nueva 1.19.50+)',
-                icon: 'fa-terminal',
-                syntax: '/execute as <entidad> at @s run <comando>',
-                fields: [
-                    { id: 'asTarget', label: 'Ejecutar COMO (as)', type: 'text', default: '@e[type=zombie]' },
-                    { id: 'atTarget', label: 'Ejecutar EN POSICIÓN DE (at)', type: 'text', default: '@s' },
-                    { id: 'subCmd', label: 'Comando a Ejecutar', type: 'text', default: 'summon lightning_bolt ~ ~ ~' }
-                ],
-                builder: (v) => `/execute as ${v.asTarget || '@s'} at ${v.atTarget || '@s'} run ${v.subCmd || 'say Hola'}`
-            },
-            fill: {
-                name: 'fill',
-                title: 'Rellenar Región (Fill)',
-                desc: 'Rellena un área completa entre dos coordenadas',
-                icon: 'fa-cubes',
-                syntax: '/fill <fromX Y Z> <toX Y Z> <tileName>',
-                fields: [
-                    { id: 'fromCoords', label: 'Coordenada Inicial (X Y Z)', type: 'text', default: '~ ~ ~' },
-                    { id: 'toCoords', label: 'Coordenada Final (X Y Z)', type: 'text', default: '~10 ~5 ~10' },
-                    { id: 'tileName', label: 'Bloque', type: 'autocomplete', list: BEDROCK_ITEMS, default: 'stone' },
-                    { id: 'fillMode', label: 'Modo de Relleno', type: 'select', options: ['replace', 'destroy', 'keep', 'hollow', 'outline'], default: 'replace' }
-                ],
-                builder: (v) => `/fill ${v.fromCoords || '~ ~ ~'} ${v.toCoords || '~ ~ ~'} ${v.tileName || 'stone'} 0 ${v.fillMode || 'replace'}`
-            },
-            setblock: {
-                name: 'setblock',
-                title: 'Colocar Bloque (Setblock)',
-                desc: 'Cambia un bloque en coordenadas específicas',
-                icon: 'fa-cube',
-                syntax: '/setblock <position> <tileName>',
-                fields: [
-                    { id: 'position', label: 'Coordenada (X Y Z)', type: 'text', default: '~ ~1 ~' },
-                    { id: 'tileName', label: 'Bloque', type: 'autocomplete', list: BEDROCK_ITEMS, default: 'command_block' },
-                    { id: 'mode', label: 'Modo', type: 'select', options: ['replace', 'destroy', 'keep'], default: 'replace' }
-                ],
-                builder: (v) => `/setblock ${v.position || '~ ~ ~'} ${v.tileName || 'stone'} 0 ${v.mode || 'replace'}`
-            },
-            gamerule: {
-                name: 'gamerule',
-                title: 'Regla de Juego (Gamerule)',
-                desc: 'Configura las reglas del servidor o del mundo',
-                icon: 'fa-sliders',
-                syntax: '/gamerule <regla> <true|false>',
-                fields: [
-                    { id: 'rule', label: 'Regla Bedrock', type: 'select', options: BEDROCK_GAMERULES, default: 'keepInventory' },
-                    { id: 'value', label: 'Valor', type: 'select', options: ['true', 'false'], default: 'true' }
-                ],
-                builder: (v) => `/gamerule ${v.rule || 'keepInventory'} ${v.value || 'true'}`
-            },
-            effect: {
-                name: 'effect',
-                title: 'Efecto de Estado',
-                desc: 'Aplica o remueve un efecto de estado',
-                icon: 'fa-flask',
-                syntax: '/effect <jugador> <efecto> [segundos]',
-                fields: [
-                    { id: 'target', label: 'Jugador', type: 'select', options: ['@p', '@a', '@s', '@r'], default: '@p' },
-                    { id: 'action', label: 'Acción', type: 'select', options: ['give', 'clear'], default: 'give' },
-                    { id: 'effect', label: 'Efecto', type: 'autocomplete', list: BEDROCK_EFFECTS, default: 'speed', conditional: { field: 'action', value: 'give' } },
-                    { id: 'seconds', label: 'Duración (seg)', type: 'number', default: '30', conditional: { field: 'action', value: 'give' } },
-                    { id: 'amplifier', label: 'Amplificador', type: 'number', default: '1', conditional: { field: 'action', value: 'give' } }
-                ],
-                builder: (v) => v.action === 'clear' ? `/effect ${v.target || '@p'} clear` : `/effect ${v.target || '@p'} ${v.effect || 'speed'} ${v.seconds || 30} ${v.amplifier || 0}`
-            },
-            summon: {
-                name: 'summon',
-                title: 'Invocar Entidad (Summon)',
-                desc: 'Invoca mobs o entidades en la ubicación',
-                icon: 'fa-dragon',
-                syntax: '/summon <entityType> [spawnPos]',
-                fields: [
-                    { id: 'entity', label: 'Entidad Bedrock', type: 'autocomplete', list: BEDROCK_ENTITIES, default: 'zombie' },
-                    { id: 'spawnPos', label: 'Coordenadas', type: 'text', default: '~ ~ ~' }
-                ],
-                builder: (v) => `/summon ${v.entity || 'zombie'} ${v.spawnPos || '~ ~ ~'}`
-            },
-            gamemode: {
-                name: 'gamemode',
-                title: 'Modo de Juego',
-                desc: 'Cambia el modo de juego del jugador',
-                icon: 'fa-gamepad',
-                syntax: '/gamemode <mode> [player]',
-                fields: [
-                    { id: 'mode', label: 'Modo', type: 'select', options: ['survival', 'creative', 'adventure', 'spectator'], default: 'creative' },
-                    { id: 'target', label: 'Jugador', type: 'text', default: '@s' }
-                ],
-                builder: (v) => `/gamemode ${v.mode || 'creative'} ${v.target || '@s'}`
-            }
-        };
-
-        const QUICK_PRESETS = [
-            { label: 'Guardar Inventarios (KeepInv)', cmd: '/gamerule keepInventory true' },
-            { label: 'Dar Bloque de Comando', cmd: '/give @p command_block 1 0' },
-            { label: 'Limpiar Lag de Ítems Tirados', cmd: '/kill @e[type=item]' },
-            { label: 'Visión Nocturna Infinita', cmd: '/effect @p night_vision 99999 0 true' },
-            { label: 'Título Global de Bienvenida', cmd: '/title @a title §a¡Bienvenido al Servidor!' },
-            { label: 'Despejar Clima y Día', cmd: '/weather clear 9999' }
-        ];
-
-        class BedrockCommandStudio {
-            constructor() {
-                this.activeCommand = 'give';
-                this.formValues = {};
-                this.history = JSON.parse(localStorage.getItem('mc_cmd_history_pro') || '[]');
-                this.favorites = JSON.parse(localStorage.getItem('mc_cmd_favs_pro') || '[]');
-                this.batchList = JSON.parse(localStorage.getItem('mc_cmd_batch_pro') || '[]');
-                this.activeFieldForCoords = null;
-
-                this.init();
-            }
-
-            init() {
-                this.renderCategories();
-                this.renderQuickPresets();
-                this.loadDefaultValues();
-                this.renderForm();
-                this.updateOutput();
-                this.renderHistory();
-                this.updateFavBadge();
-                this.updateBatchBadge();
-                this.setupCoordCalculator();
-            }
-
-            renderCategories(filter = '') {
-                const container = document.getElementById('command-categories');
-                container.innerHTML = '';
-
-                Object.keys(COMMAND_CONFIGS).forEach(key => {
-                    const cfg = COMMAND_CONFIGS[key];
-                    if (filter && !cfg.name.toLowerCase().includes(filter.toLowerCase()) && !cfg.title.toLowerCase().includes(filter.toLowerCase())) {
-                        return;
-                    }
-
-                    const isActive = this.activeCommand === key;
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = `p-2 rounded-xl border text-left transition flex flex-col items-center justify-center space-y-1 group ${
-                        isActive 
-                        ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-lg shadow-emerald-950/40' 
-                        : 'bg-slate-950/50 border-slate-800/80 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                    }`;
-                    btn.onclick = () => this.selectCommand(key);
-                    btn.innerHTML = `
-                        <i class="fa-solid ${cfg.icon} text-xs group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[10px] font-semibold tracking-tight capitalize">${cfg.name}</span>
-                    `;
-                    container.appendChild(btn);
-                });
-            }
-
-            filterCategories(val) {
-                this.renderCategories(val);
-            }
-
-            selectCommand(key) {
-                this.activeCommand = key;
-                this.loadDefaultValues();
-                this.renderCategories(document.getElementById('cmd-search-input').value);
-                this.renderForm();
-                this.updateOutput();
-            }
-
-            loadDefaultValues() {
-                const cfg = COMMAND_CONFIGS[this.activeCommand];
-                this.formValues = {};
-                cfg.fields.forEach(f => {
-                    this.formValues[f.id] = f.default !== undefined ? f.default : '';
-                });
-            }
-
-            renderForm() {
-                const cfg = COMMAND_CONFIGS[this.activeCommand];
-                
-                document.getElementById('active-title').innerText = cfg.title;
-                document.getElementById('active-desc').innerText = cfg.desc;
-                document.getElementById('active-syntax').innerText = cfg.syntax;
-                document.getElementById('active-icon').innerHTML = `<i class="fa-solid ${cfg.icon}"></i>`;
-
-                const formContainer = document.getElementById('command-form');
-                formContainer.innerHTML = '';
-
-                cfg.fields.forEach(f => {
-                    if (f.conditional) {
-                        const condVal = this.formValues[f.conditional.field];
-                        if (condVal !== f.conditional.value) return;
-                    }
-
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'space-y-1';
-
-                    const label = document.createElement('label');
-                    label.className = 'block text-xs font-semibold text-slate-300 flex items-center justify-between';
-                    label.innerHTML = `<span>${f.label}</span>`;
-                    wrapper.appendChild(label);
-
-                    let input;
-                    if (f.type === 'select') {
-                        input = document.createElement('select');
-                        input.className = 'w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition';
-                        f.options.forEach(opt => {
-                            const optEl = document.createElement('option');
-                            optEl.value = opt;
-                            optEl.innerText = opt;
-                            if (this.formValues[f.id] === opt) optEl.selected = true;
-                            input.appendChild(optEl);
-                        });
-                        input.onchange = (e) => {
-                            this.formValues[f.id] = e.target.value;
-                            this.renderForm();
-                            this.updateOutput();
-                        };
-                    } else if (f.type === 'autocomplete') {
-                        const rel = document.createElement('div');
-                        rel.className = 'relative';
-                        
-                        input = document.createElement('input');
-                        input.type = 'text';
-                        input.className = 'w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition font-mono';
-                        input.value = this.formValues[f.id] !== undefined ? this.formValues[f.id] : '';
-                        
-                        const dropdown = document.createElement('div');
-                        dropdown.className = 'absolute z-30 w-full bg-slate-900 border border-slate-800 rounded-xl mt-1 shadow-2xl max-h-36 overflow-y-auto hidden custom-scrollbar';
-
-                        input.onfocus = () => {
-                            this.activeFieldForCoords = f.id;
-                            this.updateAutocompleteDropdown(dropdown, input, f.list);
-                        };
-                        
-                        input.oninput = (e) => {
-                            this.formValues[f.id] = e.target.value;
-                            this.updateAutocompleteDropdown(dropdown, input, f.list);
-                            this.updateOutput();
-                        };
-
-                        document.addEventListener('click', (ev) => {
-                            if (!rel.contains(ev.target)) dropdown.classList.add('hidden');
-                        });
-
-                        rel.appendChild(input);
-                        rel.appendChild(dropdown);
-                        wrapper.appendChild(rel);
-                        formContainer.appendChild(wrapper);
-                        return;
-                    } else {
-                        input = document.createElement('input');
-                        input.type = f.type;
-                        input.className = 'w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition font-mono';
-                        input.value = this.formValues[f.id] !== undefined ? this.formValues[f.id] : '';
-                        
-                        input.onfocus = () => { this.activeFieldForCoords = f.id; };
-                        input.oninput = (e) => {
-                            this.formValues[f.id] = e.target.value;
-                            this.updateOutput();
-                        };
-                    }
-
-                    wrapper.appendChild(input);
-                    formContainer.appendChild(wrapper);
-                });
-            }
-
-            updateAutocompleteDropdown(dropdown, input, list) {
-                const query = input.value.toLowerCase();
-                const filtered = list.filter(item => item.toLowerCase().includes(query)).slice(0, 10);
-
-                if (filtered.length === 0) {
-                    dropdown.classList.add('hidden');
-                    return;
-                }
-
-                dropdown.innerHTML = '';
-                filtered.forEach(item => {
-                    const option = document.createElement('div');
-                    option.className = 'px-3 py-1.5 hover:bg-emerald-950/50 hover:text-emerald-300 text-xs text-slate-300 cursor-pointer font-mono transition';
-                    option.innerText = item;
-                    option.onclick = () => {
-                        input.value = item;
-                        this.formValues[this.activeFieldForCoords] = item;
-                        dropdown.classList.add('hidden');
-                        this.updateOutput();
-                    };
-                    dropdown.appendChild(option);
-                });
-                dropdown.classList.remove('hidden');
-            }
-
-            resetForm() {
-                this.loadDefaultValues();
-                this.renderForm();
-                this.updateOutput();
-            }
-
-            updateOutput() {
-                const cfg = COMMAND_CONFIGS[this.activeCommand];
-                const rawCmd = cfg.builder(this.formValues);
-                const highlighted = this.highlightSyntax(rawCmd);
-                document.getElementById('output-code-highlighted').innerHTML = highlighted;
-                this.validateCommand(rawCmd);
-                this.checkFavoriteStatus(rawCmd);
-            }
-
-            highlightSyntax(cmd) {
-                const tokens = cmd.split(' ');
-                return tokens.map((t, idx) => {
-                    if (idx === 0) {
-                        return `<span class="cmd-slash">/</span><span class="cmd-name">${t.replace('/', '')}</span>`;
-                    }
-                    if (t.startsWith('@')) {
-                        return `<span class="cmd-selector">${t}</span>`;
-                    }
-                    if (t.includes('~') || t.includes('^')) {
-                        return `<span class="cmd-coord">${t}</span>`;
-                    }
-                    if (!isNaN(t)) {
-                        return `<span class="cmd-number">${t}</span>`;
-                    }
-                    if (['true', 'false', 'replace', 'keep', 'destroy', 'clear', 'title', 'subtitle', 'actionbar', 'add', 'remove', 'run'].includes(t)) {
-                        return `<span class="cmd-keyword">${t}</span>`;
-                    }
-                    return `<span class="cmd-item">${t}</span>`;
-                }).join(' ');
-            }
-
-            validateCommand(cmd) {
-                const badge = document.getElementById('validation-badge');
-                const errBox = document.getElementById('validation-error-msg');
-                const errText = document.getElementById('validation-text');
-
-                let isValid = true;
-                let errorReason = '';
-
-                if (cmd.includes('undefined') || cmd.includes('NaN')) {
-                    isValid = false;
-                    errorReason = 'Existen campos incompletos o inválidos.';
-                } else if (cmd.length < 3) {
-                    isValid = false;
-                    errorReason = 'El comando es demasiado corto.';
-                }
-
-                if (isValid) {
-                    badge.className = 'px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center space-x-1';
-                    badge.innerHTML = `<i class="fa-solid fa-check"></i><span>Sintaxis Válida</span>`;
-                    errBox.classList.add('hidden');
-                } else {
-                    badge.className = 'px-2 py-0.5 rounded-md text-[10px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 flex items-center space-x-1';
-                    badge.innerHTML = `<i class="fa-solid fa-xmark"></i><span>Error Sintáctico</span>`;
-                    errText.innerText = errorReason;
-                    errBox.classList.remove('hidden');
-                }
-            }
-
-            generateAndCopy() {
-                this.updateOutput();
-                this.copyOutput();
-            }
-
-            getRawCommand() {
-                const cfg = COMMAND_CONFIGS[this.activeCommand];
-                return cfg.builder(this.formValues);
-            }
-
-            copyOutput() {
-                const cmd = this.getRawCommand();
-                this.copyToClipboard(cmd);
-                this.addToHistory(cmd);
-                this.showCopyFeedback();
-            }
-
-            copyToClipboard(text) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-            }
-
-            showCopyFeedback() {
-                const el = document.getElementById('copy-feedback');
-                el.classList.remove('opacity-0');
-                setTimeout(() => el.classList.add('opacity-0'), 1500);
-            }
-
-            addToHistory(cmd) {
-                if (!this.history.includes(cmd)) {
-                    this.history.unshift(cmd);
-                    this.history = this.history.slice(0, 10);
-                    localStorage.setItem('mc_cmd_history_pro', JSON.stringify(this.history));
-                    this.renderHistory();
-                }
-            }
-
-            renderHistory() {
-                const el = document.getElementById('history-list');
-                document.getElementById('history-count').textContent = `${this.history.length} comandos`;
-                if (!this.history.length) {
-                    el.innerHTML = '<div class="text-xs text-slate-500 italic">No hay historial reciente.</div>';
-                    return;
-                }
-
-                el.innerHTML = this.history.map((cmd, index) => `
-                    <button type="button" class="w-full text-left bg-slate-950/50 border border-slate-800 hover:border-emerald-700 hover:bg-emerald-950/20 rounded-xl px-3 py-2 transition" onclick="app.useHistoryCommand('${cmd.replace(/'/g, '\\'')}')">
-                        <span class="font-mono text-[11px] text-emerald-300 break-all">${cmd}</span>
-                    </button>
-                `).join('');
-            }
-
-            useHistoryCommand(cmd) {
-                const ba = cmd.replace(/\\'/g, "'");
-                const command = ba.trim();
-                const isCommand = Object.keys(COMMAND_CONFIGS).find(key => command.startsWith(`/${key}`));
-                if (isCommand) {
-                    this.activeCommand = isCommand;
-                    this.renderCategories();
-                    this.renderForm();
-                }
-                this.copyToClipboard(command);
-            }
-
-            clearHistory() {
-                this.history = [];
-                localStorage.setItem('mc_cmd_history_pro', JSON.stringify([]));
-                this.renderHistory();
-            }
-
-            renderQuickPresets() {
-                const el = document.getElementById('quick-presets');
-                el.innerHTML = QUICK_PRESETS.map(item => `
-                    <button type="button" class="bg-slate-950/50 border border-slate-800 hover:border-emerald-700 hover:bg-emerald-950/20 rounded-xl px-3 py-2 text-left transition" onclick="app.copyToClipboard('${item.cmd}')">
-                        <span class="text-[11px] text-slate-300 block">${item.label}</span>
-                    </button>
-                `).join('');
-            }
-
-            openCoordModal() {
-                const modal = document.getElementById('coord-modal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                this.setupCoordCalculator();
-            }
-
-            closeCoordModal() {
-                const modal = document.getElementById('coord-modal');
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-
-            openSavedModal() {
-                this.renderFavorites();
-                const modal = document.getElementById('favorites-modal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-
-            closeSavedModal() {
-                const modal = document.getElementById('favorites-modal');
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-
-            toggleBatchDrawer() {
-                const modal = document.getElementById('batch-modal');
-                modal.classList.toggle('hidden');
-                modal.classList.toggle('flex');
-                if (!modal.classList.contains('hidden')) this.renderBatch();
-            }
-
-            renderBatch() {
-                const el = document.getElementById('batch-list');
-                if (!this.batchList.length) {
-                    el.innerHTML = '<div class="text-xs text-slate-500 italic">Tu lote está vacío.</div>';
-                    return;
-                }
-                el.innerHTML = this.batchList.map((cmd, index) => `
-                    <div class="flex items-center justify-between gap-2 bg-slate-950/50 border border-slate-800 rounded-xl px-3 py-2">
-                        <span class="font-mono text-[11px] text-slate-200 break-all">${cmd}</span>
-                        <button type="button" class="text-rose-400 hover:text-rose-300" onclick="app.removeBatchItem(${index})"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                `).join('');
-            }
-
-            addToBatch() {
-                const cmd = this.getRawCommand();
-                this.batchList.unshift(cmd);
-                this.batchList = [...new Set(this.batchList)];
-                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
-                this.updateBatchBadge();
-                this.renderBatch();
-            }
-
-            removeBatchItem(index) {
-                this.batchList.splice(index, 1);
-                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
-                this.updateBatchBadge();
-                this.renderBatch();
-            }
-
-            clearBatch() {
-                this.batchList = [];
-                localStorage.setItem('mc_cmd_batch_pro', JSON.stringify(this.batchList));
-                this.updateBatchBadge();
-                this.renderBatch();
-            }
-
-            updateBatchBadge() {
-                document.getElementById('batch-count-badge').textContent = this.batchList.length;
-            }
-
-            copyBatch() {
-                if (!this.batchList.length) return;
-                this.copyToClipboard(this.batchList.join('\n'));
-            }
-
-            toggleFavoriteCurrent() {
-                const cmd = this.getRawCommand();
-                if (this.favorites.includes(cmd)) {
-                    this.favorites = this.favorites.filter(item => item !== cmd);
-                } else {
-                    this.favorites.unshift(cmd);
-                }
-                localStorage.setItem('mc_cmd_favs_pro', JSON.stringify(this.favorites));
-                this.checkFavoriteStatus(cmd);
-                this.updateFavBadge();
-                this.renderFavorites();
-            }
-
-            checkFavoriteStatus(cmd) {
-                const btn = document.getElementById('fav-btn');
-                const active = this.favorites.includes(cmd);
-                btn.innerHTML = active ? '<i class="fa-solid fa-star text-amber-400"></i>' : '<i class="fa-regular fa-star"></i>';
-            }
-
-            updateFavBadge() {
-                document.getElementById('fav-badge').textContent = this.favorites.length;
-            }
-
-            renderFavorites() {
-                const list = document.getElementById('favorites-list');
-                if (!this.favorites.length) {
-                    list.innerHTML = '<div class="text-xs text-slate-500 italic">No tienes comandos favoritos todavía.</div>';
-                    return;
-                }
-
-                list.innerHTML = this.favorites.map((cmd, index) => `
-                    <div class="flex items-center justify-between gap-3 bg-slate-950/50 border border-slate-800 rounded-xl p-3">
-                        <span class="font-mono text-[11px] text-slate-200 break-all">${cmd}</span>
-                        <div class="flex items-center space-x-2">
-                            <button type="button" class="text-emerald-400 hover:text-emerald-300" onclick="app.copyToClipboard('${cmd.replace(/'/g, '\\'')}')"><i class="fa-regular fa-copy"></i></button>
-                            <button type="button" class="text-rose-400 hover:text-rose-300" onclick="app.removeFavorite(${index})"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            removeFavorite(index) {
-                this.favorites.splice(index, 1);
-                localStorage.setItem('mc_cmd_favs_pro', JSON.stringify(this.favorites));
-                this.updateFavBadge();
-                this.renderFavorites();
-                this.checkFavoriteStatus(this.getRawCommand());
-            }
-
-            setupCoordCalculator() {
-                const x = document.getElementById('coord-x');
-                const y = document.getElementById('coord-y');
-                const z = document.getElementById('coord-z');
-                const preview = document.getElementById('coord-result-preview');
-                if (!x || !y || !z || !preview) return;
-
-                const update = () => {
-                    const coords = [x.value || '~', y.value || '~1', z.value || '~'];
-                    preview.textContent = coords.join(' ');
-                };
-
-                x.addEventListener('input', update);
-                y.addEventListener('input', update);
-                z.addEventListener('input', update);
-            }
-
-            applyCoordsToActiveField() {
-                const preview = document.getElementById('coord-result-preview').textContent;
-                if (!this.activeFieldForCoords) return;
-                const field = document.querySelector('#command-form input, #command-form select');
-                if (!field) return;
-                const activeTarget = this.activeFieldForCoords;
-                const config = COMMAND_CONFIGS[this.activeCommand];
-                const matchField = config.fields.find(f => f.id === activeTarget);
-                if (!matchField) return;
-
-                const f = config.fields.find(item => item.id === activeTarget);
-                this.formValues[f.id] = preview;
-                this.updateOutput();
-                this.renderForm();
-                this.closeCoordModal();
-            }
-        }
-
-        const app = new BedrockCommandStudio();
-        window.app = app;
-    </script>
-</body>
-</html>
+            <div class="px-6
